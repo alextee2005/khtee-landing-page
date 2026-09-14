@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alex Tee, CFA</title>
+<meta name="description" content="Alex Tee, CFA — chief-level finance and transformation leader in banking, based in Phnom Penh, Cambodia. Financial planning, reporting, control and risk across Cambodia and Malaysia.">
+<meta name="author" content="Alex Tee">
+<meta property="og:title" content="Alex Tee, CFA">
+<meta property="og:description" content="Chief-level finance and transformation leader in banking. Financial planning, reporting, control and risk across Cambodia and Malaysia.">
+<meta property="og:type" content="profile">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Spectral:wght@300;400;500;600&display=swap">
+<style>
+/* Alex Tee — professional landing page.
+   Design: ledger grid — a mono period rail beside hairline-separated entries. */
+
+:root {
+  --paper:      #f3f5f7;
+  --surface:    #ffffff;
+  --surface-2:  #e8eef2;
+  --ink:        #101c29;
+  --ink-soft:   #3d4f5e;
+  --ink-muted:  #63788a;
+  --rule:       #d5dde3;
+  --rule-soft:  #e4eaee;
+  --accent:     #14607f;
+  --accent-ink: #0d4359;
+  --brass:      #8f6227;
+  --hero-bg:    #0d1a25;
+  --hero-ink:   #eef3f6;
+  --hero-soft:  #a5bccb;
+  --hero-rule:  #24394a;
+  --focus:      #2a8fb8;
+  --hero-accent: #6fbcd8;
+
+  --measure: 66ch;
+  --gutter: clamp(1rem, 4vw, 3.25rem);
+  --wrap: 68rem;
+
+  --step--1: 0.8rem;
+  --step-0:  1rem;
+  --step-1:  1.0625rem;
+  --step-2:  clamp(1.3rem, 1.12rem + 0.6vw, 1.6rem);
+  --step-3:  clamp(1.65rem, 1.3rem + 1.3vw, 2.2rem);
+  --step-4:  clamp(2.4rem, 1.6rem + 3.4vw, 4.2rem);
+
+  --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --serif: "Spectral", ui-serif, Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:      #0b141c;
+    --surface:    #101d27;
+    --surface-2:  #16262f;
+    --ink:        #e7eef3;
+    --ink-soft:   #bccbd6;
+    --ink-muted:  #8ba2b2;
+    --rule:       #23343f;
+    --rule-soft:  #1b2a34;
+    --accent:     #62b4d2;
+    --accent-ink: #8fcde5;
+    --brass:      #d3a465;
+    --hero-bg:    #08111a;
+    --hero-ink:   #eaf2f7;
+    --hero-soft:  #93aec0;
+    --hero-rule:  #1e3141;
+    --focus:      #7ec8e6;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:      #0b141c;
+  --surface:    #101d27;
+  --surface-2:  #16262f;
+  --ink:        #e7eef3;
+  --ink-soft:   #bccbd6;
+  --ink-muted:  #8ba2b2;
+  --rule:       #23343f;
+  --rule-soft:  #1b2a34;
+  --accent:     #62b4d2;
+  --accent-ink: #8fcde5;
+  --brass:      #d3a465;
+  --hero-bg:    #08111a;
+  --hero-ink:   #eaf2f7;
+  --hero-soft:  #93aec0;
+  --hero-rule:  #1e3141;
+  --focus:      #7ec8e6;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+a { color: var(--accent-ink); text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent); text-underline-offset: 0.2em; }
+a:hover { text-decoration-color: currentColor; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-radius: 2px; }
+
+.wrap {
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 720px) {
+  .masthead { position: static; }
+}
+.masthead .wrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+  padding-block: 0.7rem;
+}
+.masthead-name {
+  font-family: var(--serif);
+  font-size: var(--step-1);
+  letter-spacing: 0.01em;
+  margin-right: auto;
+}
+.masthead-name span { color: var(--ink-muted); font-size: var(--step--1); font-family: var(--mono); letter-spacing: 0.1em; }
+.masthead nav ul { display: flex; flex-wrap: wrap; gap: 0.35rem 1.25rem; }
+.masthead nav a {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  text-decoration: none;
+}
+.masthead nav a:hover { color: var(--accent-ink); }
+
+/* ---------- hero ---------- */
+
+.hero {
+  background: var(--hero-bg);
+  color: var(--hero-ink);
+  border-bottom: 1px solid var(--hero-rule);
+}
+.hero .wrap { padding-block: clamp(3rem, 8vw, 5.5rem) clamp(2.5rem, 6vw, 4rem); }
+.hero .eyebrow { color: var(--hero-soft); }
+
+.hero h1 {
+  font-size: var(--step-4);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  margin-block: 0.5rem 0;
+}
+[id] { scroll-margin-top: 4.5rem; }
+
+.hero h1 .rank {
+  display: block;
+  font-family: var(--mono);
+  font-size: clamp(0.8rem, 0.6rem + 0.5vw, 1rem);
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: var(--hero-accent);
+  margin-top: 0.9rem;
+}
+.hero-lede {
+  font-family: var(--serif);
+  font-size: var(--step-2);
+  line-height: 1.45;
+  color: var(--hero-ink);
+  max-width: 34ch;
+  margin-top: 1.6rem;
+}
+.hero-body {
+  max-width: var(--measure);
+  color: var(--hero-soft);
+  margin-top: 1.1rem;
+}
+.hero-body + .hero-body { margin-top: 0.9rem; }
+
+.hero-grid {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  align-items: start;
+}
+@media (max-width: 860px) { .hero-grid { grid-template-columns: 1fr; } }
+
+/* ledger facts */
+.facts { border-top: 1px solid var(--hero-rule); }
+.facts div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.7rem;
+  border-bottom: 1px solid var(--hero-rule);
+}
+.facts dt { font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--hero-soft); }
+.facts dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+  margin-top: 1.75rem;
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+}
+.contact-row a { color: var(--hero-ink); }
+.contact-row a:hover { color: var(--hero-accent); }
+
+/* ---------- sections ---------- */
+
+.section { padding-block: clamp(2.75rem, 6vw, 4.5rem); }
+.section + .section { border-top: 1px solid var(--rule); }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.section-head h2 { font-size: var(--step-3); letter-spacing: -0.01em; white-space: nowrap; }
+.section-head .line { flex: 1; height: 1px; background: var(--rule); }
+.section-head .count { font-family: var(--mono); font-size: var(--step--1); color: var(--ink-muted); letter-spacing: 0.08em; }
+
+.section-intro { max-width: var(--measure); color: var(--ink-soft); margin-bottom: 2rem; }
+
+/* expertise */
+.expertise {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 0;
+}
+.expertise li {
+  padding: 0.85rem 0.25rem;
+  border-top: 1px solid var(--rule);
+  font-size: var(--step-0);
+  display: flex;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+.expertise li::before {
+  content: "";
+  flex: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  background: var(--accent);
+  transform: translateY(-0.15em);
+}
+
+/* ---------- ledger entries ---------- */
+
+.entry {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 0 clamp(1.25rem, 3vw, 2.5rem);
+  padding-block: 1.9rem;
+  border-top: 1px solid var(--rule);
+}
+.entry:last-of-type { border-bottom: 1px solid var(--rule); }
+@media (max-width: 720px) { .entry { grid-template-columns: 1fr; gap: 0.5rem; } }
+
+.entry-period {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.03em;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.35rem;
+}
+.entry-period .now {
+  display: inline-block;
+  margin-top: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  color: var(--accent-ink);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+@media (max-width: 720px) { .entry-period { padding-top: 0; } .entry-period .now { margin-top: 0; margin-left: 0.6rem; } }
+
+.entry-role { font-size: var(--step-2); line-height: 1.25; }
+.entry-org {
+  margin-top: 0.35rem;
+  font-family: var(--sans);
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+}
+.entry-org strong { font-weight: 600; color: var(--ink); }
+.entry-note {
+  margin-top: 0.9rem;
+  max-width: var(--measure);
+  color: var(--ink-soft);
+  font-family: var(--serif);
+  font-size: var(--step-1);
+  line-height: 1.55;
+}
+.entry-list { margin-top: 1.1rem; display: grid; gap: 0.7rem; max-width: var(--measure); }
+.entry-list li { position: relative; padding-left: 1.15rem; color: var(--ink-soft); }
+.entry-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.7em;
+  width: 0.5rem;
+  height: 1px;
+  background: var(--accent);
+}
+.entry-list b { color: var(--ink); font-weight: 600; }
+
+.subhead {
+  margin-top: 1.4rem;
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.subhead + .entry-list { margin-top: 0.7rem; }
+
+/* earlier roles — compact ledger rows */
+.early { margin-top: 2.25rem; }
+.early-title {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding-block: 1.25rem 0.5rem;
+}
+.early ol { margin: 0; padding: 0; list-style: none; }
+.early li {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr) auto;
+  gap: 0.25rem clamp(1.25rem, 3vw, 2.5rem);
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--rule-soft);
+  align-items: baseline;
+}
+.early li:first-child { border-top: 1px solid var(--rule-soft); }
+.early .p { font-family: var(--mono); font-size: var(--step--1); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.early .o { color: var(--ink-muted); text-align: right; }
+@media (max-width: 720px) {
+  .early li { grid-template-columns: 1fr; }
+  .early .o { text-align: left; }
+}
+.early .footnote { color: var(--ink-muted); font-size: var(--step--1); padding-top: 1rem; }
+
+/* ---------- accomplishments ---------- */
+
+.accomplishments { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+.accomplishments li {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 0.35rem clamp(1.25rem, 3vw, 2.5rem);
+  padding-block: 1.4rem;
+  border-bottom: 1px solid var(--rule);
+}
+@media (max-width: 720px) { .accomplishments li { grid-template-columns: 1fr; } }
+.accomplishments .tag {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+.accomplishments p { max-width: var(--measure); color: var(--ink-soft); }
+.accomplishments strong { color: var(--ink); font-weight: 600; }
+
+.award {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.25rem;
+  margin-top: 2rem;
+  padding: 1.15rem 1.35rem;
+  background: var(--surface);
+  border-left: 3px solid var(--brass);
+}
+.award .label {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brass);
+}
+.award .date { margin-left: auto; font-family: var(--mono); font-size: var(--step--1); color: var(--ink-muted); }
+
+/* ---------- credentials ---------- */
+
+.credentials {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+.credentials h3 {
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--rule);
+}
+.credentials ul { margin-top: 0.9rem; display: grid; gap: 0.6rem; }
+.credentials li { color: var(--ink-soft); }
+.credentials b { color: var(--ink); font-weight: 600; display: block; }
+.credentials .meta { font-family: var(--mono); font-size: var(--step--1); color: var(--ink-muted); }
+
+/* ---------- contact ---------- */
+
+.contact { background: var(--hero-bg); color: var(--hero-ink); }
+.contact .wrap { padding-block: clamp(2.75rem, 6vw, 4.25rem); }
+.contact h2 { font-size: var(--step-3); }
+.contact p { max-width: var(--measure); color: var(--hero-soft); margin-top: 0.9rem; }
+.contact-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0;
+  margin-top: 2rem;
+  border-top: 1px solid var(--hero-rule);
+}
+.contact-list div { padding-block: 0.9rem; border-bottom: 1px solid var(--hero-rule); padding-right: 1rem; }
+.contact-list dt { font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.1em; text-transform: uppercase; color: var(--hero-soft); }
+.contact-list dd { margin: 0.3rem 0 0; word-break: break-word; }
+.contact-list a { color: var(--hero-ink); }
+.contact-list a:hover { color: var(--hero-accent); }
+
+.colophon {
+  margin-top: 2.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--hero-rule);
+  font-family: var(--mono);
+  font-size: var(--step--1);
+  color: var(--hero-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: space-between;
+}
+
+/* ---------- motion ---------- */
+
+.lift { animation: lift 0.7s cubic-bezier(0.2, 0.7, 0.3, 1) both; }
+.lift:nth-child(2) { animation-delay: 0.08s; }
+@keyframes lift {
+  from { opacity: 0.001; transform: translateY(0.6rem); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lift { animation: none; }
+  * { scroll-behavior: auto !important; }
+}
+html { scroll-behavior: smooth; }
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <div class="masthead-name">Alex Tee <span>CFA</span></div>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#accomplishments">Accomplishments</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#volunteer">Volunteer</a></li>
+        <li><a href="#credentials">Credentials</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="lift">
+          <p class="eyebrow">Phnom Penh, Cambodia</p>
+          <h1>Alex Tee<span class="rank">CFA Charterholder</span></h1>
+          <p class="hero-lede">Chief-level finance and transformation leader in banking &mdash; financial planning, reporting and control, from the ledger to the boardroom.</p>
+          <p class="hero-body">A CFA charterholder with more than ten years across finance, risk and transformation in Cambodia and Malaysia. As a direct report to the CEO of a state-owned development bank, I own the transformation agenda and the finance function that underpins it: the ten-year strategy, successive three-year business plans, the financial plan behind them, and the reporting and control architecture that holds them together.</p>
+          <p class="hero-body">My finance work runs from the ledger up. I designed the general ledger and reporting structure for the bank's Temenos&nbsp;T24 core banking platform against the National Bank of Cambodia's Chart of Accounts, established the accounting and reporting framework for a ring-fenced USD&nbsp;100&nbsp;million climate finance facility, and lead the annual IFRS&nbsp;9 impairment recalibration for statutory audit. As an independent non-executive director and chairperson of an insurer's investment committee, I bring the same discipline to capital, investment oversight and governance &mdash; and I build the teams that sustain it, having grown financial risk practices at two Big Four firms and trained 100+ staff in new data and AI tools.</p>
+          <div class="contact-row">
+            <a href="mailto:alextee2005@gmail.com">alextee2005@gmail.com</a>
+            <a href="tel:+85517999810">+855 17 999 810</a>
+          </div>
+        </div>
+        <dl class="facts lift">
+          <div><dt>Based in</dt><dd>Phnom Penh, Cambodia</dd></div>
+          <div><dt>Experience</dt><dd>10+ years</dd></div>
+          <div><dt>Markets</dt><dd>Cambodia &amp; Malaysia</dd></div>
+          <div><dt>Charter</dt><dd>CFA Institute</dd></div>
+          <div><dt>Board seat</dt><dd>INED, GC Life Insurance Plc</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <section class="section" id="accomplishments" aria-labelledby="accomplishments-h">
+      <div class="section-head">
+        <h2 id="accomplishments-h">Selected accomplishments</h2>
+        <span class="line" aria-hidden="true"></span>
+      </div>
+      <ul class="accomplishments">
+        <li>
+          <span class="tag">Strategy</span>
+          <p>Developed a <strong>ten-year transformation roadmap</strong> and multiple three-year business plans for a state-owned bank as overall project lead, defining strategic priorities, the financial plan and execution pathways.</p>
+        </li>
+        <li>
+          <span class="tag">Core banking</span>
+          <p>Delivered a successful <strong>core banking transformation in January 2026</strong> as lead business analyst, assistant project manager, and chief architect and designer of the GL reporting structure aligned to the NBC Chart of Accounts.</p>
+        </li>
+        <li>
+          <span class="tag">Payments</span>
+          <p>Supported the successful <strong>go-live of a card management system in 2024</strong>, advising on the accounting treatment of ATM and POS transactions posted via ISO 8583.</p>
+        </li>
+        <li>
+          <span class="tag">IFRS 9</span>
+          <p>Delivered <strong>multiple IFRS 9 impairment model development and validation projects</strong> across Cambodian banks as project manager.</p>
+        </li>
+        <li>
+          <span class="tag">Practice building</span>
+          <p>Built and led <strong>risk advisory teams at Big Four firms</strong> in Cambodia and Malaysia — covering recruitment, learning and development, and business development — growing the practices while executing complex financial risk engagements.</p>
+        </li>
+      </ul>
+
+      <div class="award">
+        <span class="label">Award</span>
+        <span><strong>3rd Place</strong> &middot; District 97 Speech Evaluation Contest</span>
+        <span class="date">May 2026</span>
+      </div>
+    </section>
+
+    <section class="section" id="expertise" aria-labelledby="expertise-h">
+      <div class="section-head">
+        <h2 id="expertise-h">Areas of expertise</h2>
+        <span class="line" aria-hidden="true"></span>
+      </div>
+      <ul class="expertise">
+        <li>Banking &amp; digital transformation</li>
+        <li>IFRS 9 impairment model implementation</li>
+        <li>Strategy &amp; business planning</li>
+        <li>Financial planning &amp; analysis</li>
+        <li>Risk &amp; regulatory change</li>
+        <li>Team leadership &amp; capability building</li>
+        <li>Financial modelling and valuation</li>
+        <li>Equity &amp; derivatives</li>
+      </ul>
+    </section>
+
+    <section class="section" id="experience" aria-labelledby="experience-h">
+      <div class="section-head">
+        <h2 id="experience-h">Professional experience</h2>
+        <span class="line" aria-hidden="true"></span>
+        <span class="count">2010 &ndash; present</span>
+      </div>
+
+      <article class="entry">
+        <p class="entry-period">Mar 2020 &ndash; Present <span class="now">Current</span></p>
+        <div>
+          <h3 class="entry-role">Technical Advisor &mdash; de facto Head of Transformation</h3>
+          <p class="entry-org"><strong>Agricultural &amp; Rural Development Bank</strong> &middot; Phnom Penh, Cambodia</p>
+          <p class="entry-note">Direct report to the CEO, leading the strategic transformation agenda and major change initiatives across the bank, including Finance.</p>
+          <ul class="entry-list">
+            <li>Led the bank's <b>ten-year transformation roadmap and three-year business plans</b>, aligning business strategy with the financial plan; the network has grown to 3 branches, 3 ATMs and mobile banking, from no branches, no ATMs and no mobile banking in 2020.</li>
+            <li>Led business analysis and co-managed delivery of the bank's <b>Temenos T24 core banking system</b>, personally designing the GL reporting structure to match the NBC Chart of Accounts — carried through requirements, testing and go-live in January 2026.</li>
+            <li>Designed the accounting and reporting process for ARDB's new ring-fenced <b>Cambodia Climate Finance Facility</b>, covering USD 100 million.</li>
+            <li>Advised on accounting postings for online ATM and POS transactions during the switch and card management implementation, culminating in a successful go-live in 2024.</li>
+            <li>Led the bank's annual <b>IFRS 9 impairment model recalibrations</b> for statutory audit.</li>
+            <li>Delivered capability-building workshops on Excel data analysis and AI prompting for <b>100+ staff</b>, accelerating adoption of new processes and tools in the bank's digital and AI transformation.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="entry-period">Jun 2023 &ndash; Present <span class="now">Current</span></p>
+        <div>
+          <h3 class="entry-role">Independent Non-Executive Director</h3>
+          <p class="entry-org"><strong>GC Life Insurance Plc</strong> &middot; Phnom Penh, Cambodia</p>
+          <p class="entry-note">Chairperson of the Investment Committee.</p>
+          <ul class="entry-list">
+            <li>Provides board oversight on strategy, risk management, investment and governance.</li>
+            <li>Contributes banking and risk advisory insight to board discussions on investment, capital and the control environment.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="entry-period">Nov 2018 &ndash; Sep 2022</p>
+        <div>
+          <h3 class="entry-role">Senior Lecturer &amp; Programme Coordinator, Banking &amp; Finance</h3>
+          <p class="entry-org"><strong>Paragon International University</strong> &middot; Phnom Penh, Cambodia</p>
+          <ul class="entry-list">
+            <li>Coordinated the Banking &amp; Finance programme, keeping the curriculum relevant to modern banking, risk and corporate finance — achieving <b>CFA University Affiliate status</b> and cooperation with IBF Cambodia.</li>
+            <li>Delivered courses in Financial Management, Bank Management, Portfolio Management, Investment Analysis, and International Banking &amp; Finance.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="entry-period">Jul 2017 &ndash; Nov 2019</p>
+        <div>
+          <h3 class="entry-role">Manager / Senior Manager, Financial Risk</h3>
+          <p class="entry-org"><strong>Deloitte</strong> &middot; Cambodia &amp; Malaysia</p>
+          <p class="subhead">Phnom Penh, Cambodia</p>
+          <ul class="entry-list">
+            <li>Led financial risk advisory engagements, including a ten-year transformation roadmap and three-year business plan for a specialised bank, and IFRS 9 impairment model projects.</li>
+            <li>Grew the financial risk practice from <b>1 to 5</b> professionals.</li>
+            <li>Closed total sales worth over <b>USD 500,000</b> across Cambodia, Laos and Myanmar.</li>
+          </ul>
+          <p class="subhead">Kuala Lumpur, Malaysia</p>
+          <ul class="entry-list">
+            <li>Pioneer team member in Malaysia, growing the financial risk practice from <b>5 to 40+</b> professionals and leading valuation, hedging and internal audit assignments for regional financial institutions.</li>
+          </ul>
+        </div>
+      </article>
+
+      <div class="early">
+        <p class="early-title">Earlier roles &middot; Kuala Lumpur, Malaysia</p>
+        <ol>
+          <li>
+            <span class="p">Sep 2016 &ndash; Jul 2017</span>
+            <span>Senior Associate, Financial Services Risk Management</span>
+            <span class="o">EY Malaysia</span>
+          </li>
+          <li>
+            <span class="p">Apr 2014 &ndash; Sep 2016</span>
+            <span>Senior Executive, Equity &amp; Commodity Derivatives Group</span>
+            <span class="o">Maybank Investment Bank</span>
+          </li>
+          <li>
+            <span class="p">Mar 2012 &ndash; Mar 2014</span>
+            <span>Management Associate</span>
+            <span class="o">Maybank Group</span>
+          </li>
+          <li>
+            <span class="p">Sep 2011 &ndash; Feb 2012</span>
+            <span>Audit Assistant, Audit</span>
+            <span class="o">EY Malaysia</span>
+          </li>
+          <li>
+            <span class="p">Nov 2010 &ndash; Apr 2011</span>
+            <span>Intern, IT Risk Assurance</span>
+            <span class="o">EY Malaysia</span>
+          </li>
+        </ol>
+        <p class="footnote">Further detail on earlier roles available on request.</p>
+      </div>
+    </section>
+
+    <section class="section" id="volunteer" aria-labelledby="volunteer-h">
+      <div class="section-head">
+        <h2 id="volunteer-h">Volunteer &amp; community leadership</h2>
+        <span class="line" aria-hidden="true"></span>
+      </div>
+      <p class="section-intro">Alongside my professional work, I invest in the development of the next generation of finance professionals and communicators in Cambodia.</p>
+
+      <article class="entry">
+        <p class="entry-period">Jan 2025 &ndash; Jun 2026</p>
+        <div>
+          <h3 class="entry-role">Club President &amp; Vice President of Education</h3>
+          <p class="entry-org"><strong>Phnom Penh Toastmasters Club</strong> &middot; Phnom Penh, Cambodia</p>
+          <p class="subhead">Vice President of Education &middot; Jan&ndash;Jun 2025, Jan&ndash;Jun 2026</p>
+          <ul class="entry-list">
+            <li>Coordinated the conduct of weekly club meetings.</li>
+            <li>Focused on the personal development of members, mentoring <b>more than 10 members</b> of the Toastmasters community.</li>
+          </ul>
+          <p class="subhead">Club President &middot; Jul&ndash;Dec 2025</p>
+          <ul class="entry-list">
+            <li>Provided visionary leadership to sustain the club's long-term health.</li>
+            <li>Maintained a club environment conducive to members' growth.</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="entry">
+        <p class="entry-period">Season 6 &ndash; Present</p>
+        <div>
+          <h3 class="entry-role">Volunteer &amp; Lead Organiser, CFA Institute Research Challenge</h3>
+          <p class="entry-org"><strong>Cambodia Community of Investment Professionals</strong> &middot; Phnom Penh, Cambodia</p>
+          <ul class="entry-list">
+            <li>Lead organiser of the CFA Institute Research Challenge in Cambodia from Season 6 to the present, bringing university teams into the practice of professional equity research.</li>
+          </ul>
+        </div>
+      </article>
+    </section>
+
+    <section class="section" id="credentials" aria-labelledby="credentials-h">
+      <div class="section-head">
+        <h2 id="credentials-h">Credentials</h2>
+        <span class="line" aria-hidden="true"></span>
+      </div>
+      <div class="credentials">
+        <div>
+          <h3>Education</h3>
+          <ul>
+            <li>
+              <b>Bachelor of Accounting</b>
+              Multimedia University Malaysia, Cyberjaya
+              <span class="meta">May 2007 &ndash; Jun 2011</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Licences &amp; certifications</h3>
+          <ul>
+            <li>
+              <b>CFA Charterholder</b>
+              CFA Institute
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3>Languages</h3>
+          <ul>
+            <li>English <span class="meta">Professional</span></li>
+            <li>Malay <span class="meta">Intermediate</span></li>
+            <li>Indonesian <span class="meta">Conversational</span></li>
+            <li>Chinese <span class="meta">Conversational</span></li>
+            <li>Khmer <span class="meta">Basic conversational</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="contact" id="contact" aria-labelledby="contact-h">
+    <div class="wrap">
+      <h2 id="contact-h">Get in touch</h2>
+      <p>I welcome conversations on banking transformation, finance and risk leadership, board appointments, and IFRS 9 and core banking programmes across Cambodia and the wider region.</p>
+      <dl class="contact-list">
+        <div>
+          <dt>Email</dt>
+          <dd><a href="mailto:alextee2005@gmail.com">alextee2005@gmail.com</a></dd>
+        </div>
+        <div>
+          <dt>Telephone</dt>
+          <dd><a href="tel:+85517999810">+855 17 999 810</a></dd>
+        </div>
+        <div>
+          <dt>Location</dt>
+          <dd>Phnom Penh, Cambodia</dd>
+        </div>
+      </dl>
+      <p class="colophon">
+        <span>Alex Tee, CFA &middot; Banking &amp; Capital Markets</span>
+        <span>Curriculum vitae available on request</span>
+      </p>
+    </div>
+  </section>
+</main>
+</body>
+</html>
