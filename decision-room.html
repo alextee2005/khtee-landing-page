@@ -28,17 +28,39 @@
   them. Search the file for "[" to list them all.
 
   LAUNCH CHECKLIST
-  1.  [APPLY_URL]          -> your application form (Typeform / Google Form)
-  2.  [WHATSAPP_URL]       -> https://wa.me/85517999810 (verify)
-  3.  [PRICE] / [PRICE_3X] / [FUTURE_PRICE]
-  4.  [N_PLACES] [N_TAKEN] [CLOSE_DATE] [COHORT_MONTH] [START_DATE]
-  5.  [N_SESSIONS] [DAY] [TIME] [TZ] [MINUTES] [PLATFORM] [WEEKS] [HOURS_WK]
-  6.  [N_ONE_TO_ONE] [MIN_YEARS] [N_FIRST_SESSIONS]
-  7.  [PROMO_VALUE] [PAYBACK_MULTIPLE] [SALARY_SOURCE]
-  8.  Proof section: swap the founding-cohort block for real testimonials
-      as soon as you have them. Never invent one.
-  9.  Delete the .ph highlight styling (marked below) once all brackets are gone.
-  10. Add analytics + the form embed. Test on a real phone.
+
+  WIRING (nothing works until these three are set)
+  1.  [FORM_ENDPOINT]       -> application form POST endpoint
+                               (Formspree / Basin / Getform / Netlify Forms)
+  2.  [NEWSLETTER_ENDPOINT] -> your email provider's form action
+                               (Mailchimp / MailerLite / Kit / Buttondown)
+                               Mailchimp uses EMAIL uppercase as the field name.
+  3.  [CHECKOUT_URL_FULL] and [CHECKOUT_URL_PLAN]
+                            -> hosted payment links. See the note above the
+                               #enrol section about provider country support.
+
+  MONEY
+  4.  [PRICE] [PRICE_3X] [PRICE_PLAN_TOTAL] [SAVING] [CURRENCY]
+  5.  [PAYMENT_PROVIDER] [PROMO_VALUE] [PAYBACK_MULTIPLE] [SALARY_SOURCE]
+
+  COHORT
+  6.  [N_PLACES] [N_TAKEN] [CLOSE_DATE] [COHORT_MONTH] [START_DATE]
+  7.  [N_SESSIONS] [DAY] [TIME] [TZ] [MINUTES] [PLATFORM] [WEEKS] [HOURS_WK]
+  8.  [N_ONE_TO_ONE] [MIN_YEARS] [N_FIRST_SESSIONS] [COUNTRIES] [SPECIFIC_EXTRA]
+
+  CONTACT & LEGAL
+  9.  [WHATSAPP_URL]  -> https://wa.me/85517999810 (verify the number)
+  10. [PRIVACY_URL]   -> a real privacy page. You are collecting names,
+                         emails and phone numbers, so you need one.
+  11. [REPLY_TIME] [FORM_MINUTES] [HOURS]
+
+  BEFORE YOU GO LIVE
+  12. Proof section: swap the founding-cohort block for real testimonials as
+      soon as you have them. Never invent one.
+  13. Delete the .ph highlight styling (marked below) once all brackets are gone.
+  14. Submit both forms yourself and confirm the email arrives.
+  15. Turn on double opt-in in your email provider.
+  16. Add analytics. Test on a real phone.
   ============================================================================
 -->
 
@@ -63,6 +85,7 @@
   --dark-rule:  #24394a;
   --dark-accent:#6fbcd8;
   --focus:      #2a8fb8;
+  --danger:     #a3281f;
 
   --measure: 60ch;
   --gutter: clamp(1rem, 4vw, 3.25rem);
@@ -83,7 +106,7 @@
     --ink: #e7eef3; --ink-soft: #bccbd6; --ink-muted: #8ba2b2;
     --rule: #23343f; --rule-soft: #1b2a34;
     --accent: #62b4d2; --accent-ink: #8fcde5; --accent-on: #071119;
-    --brass: #d3a465; --brass-bg: #1d1a12;
+    --brass: #d3a465; --brass-bg: #1d1a12; --danger: #f2907f;
     --dark-bg: #08111a; --dark-rule: #1e3141; --focus: #7ec8e6;
   }
 }
@@ -92,7 +115,7 @@
   --ink: #e7eef3; --ink-soft: #bccbd6; --ink-muted: #8ba2b2;
   --rule: #23343f; --rule-soft: #1b2a34;
   --accent: #62b4d2; --accent-ink: #8fcde5; --accent-on: #071119;
-  --brass: #d3a465; --brass-bg: #1d1a12;
+  --brass: #d3a465; --brass-bg: #1d1a12; --danger: #f2907f;
   --dark-bg: #08111a; --dark-rule: #1e3141; --focus: #7ec8e6;
 }
 
@@ -251,12 +274,77 @@ ul.ticks li::before { content: "—"; position: absolute; left: 0; color: var(--
 /* ---------- closing ---------- */
 .ps { margin-top: 2.25rem; padding-top: 1.5rem; border-top: 1px solid var(--dark-rule); max-width: var(--measure); }
 .ps p + p { margin-top: 1rem; }
-.ps strong { color: var(--dark-ink); }
+.band-dark .ps strong { color: var(--dark-ink); }
 
 /* ---------- footer ---------- */
 .site-foot { border-top: 1px solid var(--rule); padding-block: 2rem; font-family: var(--mono); font-size: var(--step--1); color: var(--ink-muted); letter-spacing: 0.04em; }
 .site-foot .wrap { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; }
 .site-foot a { color: var(--ink-muted); }
+
+
+/* ---------- pricing / checkout ---------- */
+.price-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fit, minmax(17.5rem, 1fr)); margin-top: 2rem; }
+.price-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 2px; padding: clamp(1.35rem, 3vw, 2rem); display: flex; flex-direction: column; }
+.price-card.featured { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+.price-card h3 { font-family: var(--sans); font-weight: 600; font-size: var(--step-1); }
+.price-badge { display: inline-block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-on); background: var(--accent); padding: 0.22rem 0.55rem; border-radius: 2px; margin-bottom: 0.85rem; align-self: flex-start; }
+.price-tag { font-family: var(--mono); font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.05rem); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; margin-top: 0.55rem; line-height: 1.1; }
+.price-sub { font-family: var(--mono); font-size: var(--step--1); letter-spacing: 0.05em; color: var(--ink-muted); margin-top: 0.4rem; }
+.price-card ul { margin-top: 1.15rem; flex: 1 1 auto; }
+.price-card ul li { list-style: none; padding-left: 1.4rem; position: relative; margin-top: 0.6rem; color: var(--ink-soft); font-size: 0.98rem; }
+.price-card ul li::before { content: "\2713"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+.price-card .btn { margin-top: 1.6rem; text-align: center; }
+.price-card:not(.featured)::before { content: ""; display: block; height: 1.68rem; margin-bottom: 0.85rem; }
+@media (max-width: 47.5rem) { .price-card:not(.featured)::before { display: none; } }
+.pay-note { margin-top: 1.5rem; color: var(--ink-muted); font-size: var(--step--1); }
+
+/* ---------- forms ---------- */
+.form-card { background: var(--surface); border: 1px solid var(--rule); border-left: 3px solid var(--accent); border-radius: 2px; padding: clamp(1.25rem, 3.5vw, 2.25rem); margin-top: 2rem; }
+.field { margin-top: 1.2rem; }
+.field:first-child { margin-top: 0; }
+.field > label { display: block; font-weight: 600; margin-bottom: 0.4rem; }
+.req { color: var(--brass); }
+.hint { display: block; font-weight: 400; color: var(--ink-muted); font-size: var(--step--1); margin-top: 0.15rem; }
+.form-row { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); }
+.form-row .field { margin-top: 1.2rem; display: flex; flex-direction: column; }
+.form-row .field > label { flex: 1 0 auto; }
+input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+  width: 100%; font: inherit; color: var(--ink); background: var(--paper);
+  border: 1px solid var(--rule); border-radius: 2px; padding: 0.7rem 0.85rem; min-height: 2.9rem;
+  -webkit-appearance: none; appearance: none;
+}
+select { background-image: linear-gradient(45deg, transparent 50%, var(--ink-muted) 50%), linear-gradient(135deg, var(--ink-muted) 50%, transparent 50%); background-position: calc(100% - 1.1rem) 1.25rem, calc(100% - 0.75rem) 1.25rem; background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; padding-right: 2.25rem; }
+textarea { min-height: 6.5rem; resize: vertical; line-height: 1.55; }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; border-color: var(--accent); }
+.field.invalid input, .field.invalid select, .field.invalid textarea { border-color: var(--danger); }
+.err { color: var(--danger); font-size: var(--step--1); margin-top: 0.35rem; display: none; }
+.field.invalid .err { display: block; }
+.check { display: flex; gap: 0.75rem; align-items: flex-start; margin-top: 1.3rem; }
+.check input { margin: 0.2rem 0 0; width: 1.15rem; height: 1.15rem; flex: 0 0 auto; accent-color: var(--accent); }
+.check label { font-size: 0.97rem; color: var(--ink-soft); }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.form-actions { margin-top: 1.75rem; }
+.form-actions .btn { width: 100%; text-align: center; }
+@media (min-width: 40rem) { .form-actions .btn { width: auto; } }
+.form-foot { margin-top: 1rem; font-size: var(--step--1); color: var(--ink-muted); }
+.form-status { margin-top: 1.2rem; padding: 0.95rem 1.1rem; border-radius: 2px; display: none; }
+.form-status.show { display: block; }
+.form-status.ok { background: color-mix(in srgb, var(--accent) 12%, transparent); border: 1px solid var(--accent); }
+.form-status.bad { background: color-mix(in srgb, var(--danger) 12%, transparent); border: 1px solid var(--danger); }
+.form-status strong { display: block; margin-bottom: 0.3rem; }
+button.btn { cursor: pointer; font-family: inherit; }
+button.btn[disabled] { opacity: 0.6; cursor: progress; }
+
+/* ---------- newsletter ---------- */
+.nl-form { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.4rem; max-width: 34rem; }
+.nl-form .nl-email { flex: 1 1 15rem; }
+.nl-form .btn { flex: 0 0 auto; }
+.band-dark input[type="text"], .band-dark input[type="email"] { background: rgba(255,255,255,0.05); border-color: var(--dark-rule); color: var(--dark-ink); }
+.band-dark input::placeholder { color: #6f8798; }
+.band-dark .check label, .band-dark .form-foot { color: var(--dark-soft); }
+.band-dark .err { color: #f2907f; }
+.band-dark .form-status.ok { background: rgba(111,188,216,0.12); border-color: var(--dark-accent); }
+.band-dark .form-status.bad { background: rgba(242,144,127,0.12); border-color: #f2907f; }
 
 /* ---------- mobile sticky CTA ---------- */
 .stickybar {
@@ -291,7 +379,7 @@ ul.ticks li::before { content: "—"; position: absolute; left: 0; color: var(--
     <p class="sub">You cannot get into the room. You <em>can</em> change what is said in it. Here is how — from a CFA charterholder who sits in those rooms every week, and who spent his first six years locked out of them.</p>
 
     <div class="cta-block">
-      <a class="btn btn-lg" href="#apply">Apply for the next cohort &rarr;</a>
+      <a class="btn btn-lg" href="#enrol">Take a place &rarr;</a>
       <p class="cta-sub"><span class="ph">[N_PLACES]</span> places · Applications close <span class="ph">[CLOSE_DATE]</span></p>
     </div>
 
@@ -511,7 +599,7 @@ ul.ticks li::before { content: "—"; position: absolute; left: 0; color: var(--
 </section>
 
 <!-- ============ GUARANTEE ============ -->
-<section>
+<section id="guarantee">
   <div class="wrap narrow flow">
     <p class="eyebrow">Your risk</p>
     <h2>The guarantee.</h2>
@@ -591,8 +679,8 @@ ul.ticks li::before { content: "—"; position: absolute; left: 0; color: var(--
   </div>
 </section>
 
-<!-- ============ CLOSE ============ -->
-<section class="band-dark" id="apply">
+<!-- ============ CLOSE — two futures ============ -->
+<section class="band-dark" id="close">
   <div class="wrap">
     <div class="narrow flow">
       <p class="eyebrow">Two versions of the next three years</p>
@@ -602,7 +690,7 @@ ul.ticks li::before { content: "—"; position: absolute; left: 0; color: var(--
     <div class="split">
       <div class="split-col">
         <h3 style="color:var(--dark-ink)">One</h3>
-        <p class="sub" style="margin-top:1rem">You close this page. It was a good read. Next cycle comes. You are strong technically. They need more presence from you. Let's revisit next cycle. Your parents get another year older. The 27-year-old who is fluent in AI and comfortable on camera moves past you, and you tell yourself it's politics — which is true, and which changes nothing.</p>
+        <p class="sub" style="margin-top:1rem">You close this page. It was a good read. Next cycle comes. You are strong technically. They need more presence from you. Let's revisit next cycle. Your parents get another year older. The 27-year-old who is fluent in AI and comfortable on camera moves past you, and you tell yourself it's politics &mdash; which is true, and which changes nothing.</p>
       </div>
       <div class="split-col">
         <h3 style="color:var(--dark-ink)">Two</h3>
@@ -611,14 +699,231 @@ ul.ticks li::before { content: "—"; position: absolute; left: 0; color: var(--
     </div>
 
     <div class="cta-block">
-      <a class="btn btn-lg" href="[APPLY_URL]">Apply for the <span class="ph">[COHORT_MONTH]</span> cohort &rarr;</a>
-      <p class="cta-sub"><span class="ph">[N_PLACES]</span> places · <span class="ph">[N_TAKEN]</span> taken · Applications close <span class="ph">[CLOSE_DATE]</span></p>
-      <p class="cta-sub">Questions first? <a href="mailto:alextee2005@gmail.com" style="color:var(--dark-accent)">alextee2005@gmail.com</a> · <a href="[WHATSAPP_URL]" style="color:var(--dark-accent)">WhatsApp</a></p>
+      <a class="btn btn-lg" href="#enrol">Take one of the <span class="ph">[N_PLACES]</span> places &rarr;</a>
+      <p class="cta-sub"><span class="ph">[N_TAKEN]</span> taken &middot; Applications close <span class="ph">[CLOSE_DATE]</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ENROL — pricing & checkout ============ -->
+<!--
+  CHECKOUT WIRING
+  The two buttons below just need a hosted payment link. No backend, no keys
+  in the page. Create the link in your provider's dashboard, paste the URL
+  into [CHECKOUT_URL_FULL] and [CHECKOUT_URL_PLAN].
+
+  Provider options (verify current country support yourself before choosing):
+    - Stripe Payment Links      — simplest if your business is in MY/SG/TH.
+    - Paddle / Lemon Squeezy    — merchant of record; they handle tax and
+                                  support sellers in more countries.
+    - 2C2P, ABA PayWay, Wise    — regional options worth checking for a
+                                  Cambodia-registered business.
+    - PayPal.me / invoice       — lowest-tech fallback while you validate.
+
+  NOTE: I have NOT verified which of these currently onboard a
+  Cambodia-registered business. Confirm with the provider before you
+  announce a price.
+-->
+<section id="enrol">
+  <div class="wrap">
+    <div class="narrow flow">
+      <p class="eyebrow">Take a place</p>
+      <h2>Two ways in.</h2>
+      <p>If you have read this far and you already know, take a place now. If you would rather talk to me first, apply below &mdash; it is the same cohort either way.</p>
     </div>
 
-    <div class="ps">
-      <p><strong>P.S.</strong> If you are still reading, it is because a specific person came to mind while you read this — the one who talks more than they work, and is one grade above you. They are not smarter than you. They simply understood something about the Decision Room that nobody ever told you. It took me six years to see it. It takes <span class="ph">[WEEKS]</span> weeks to learn it. <strong>Applications close <span class="ph">[CLOSE_DATE]</span>.</strong></p>
-      <p><strong>P.P.S.</strong> Not sure? Apply anyway. Applying is not buying — it is a <span class="ph">[FORM_MINUTES]</span>-minute form and a short call with me, and I will tell you honestly if this is not right for you. I have turned people away before. I would rather do that than take your money.</p>
+    <div class="price-grid">
+      <div class="price-card featured">
+        <span class="price-badge">Best value</span>
+        <h3>Pay in full</h3>
+        <p class="price-tag"><span class="ph">[PRICE]</span></p>
+        <p class="price-sub">One payment &middot; saves <span class="ph">[SAVING]</span></p>
+        <ul>
+          <li>The full <span class="ph">[WEEKS]</span>-week programme</li>
+          <li><span class="ph">[N_ONE_TO_ONE]</span> private sessions with me</li>
+          <li>Lifetime access to everything</li>
+          <li>Founding-cohort extra: <span class="ph">[SPECIFIC_EXTRA]</span></li>
+        </ul>
+        <a class="btn btn-lg" href="[CHECKOUT_URL_FULL]">Reserve my place &rarr;</a>
+      </div>
+
+      <div class="price-card">
+        <h3>Three monthly payments</h3>
+        <p class="price-tag"><span class="ph">[PRICE_3X]</span> <span style="font-size:0.5em;color:var(--ink-muted)">&times; 3</span></p>
+        <p class="price-sub">Total <span class="ph">[PRICE_PLAN_TOTAL]</span> &middot; first payment today</p>
+        <ul>
+          <li>Exactly the same programme</li>
+          <li>Start now, pay over three months</li>
+          <li>Same guarantee, same access</li>
+          <li>No interest, no credit check</li>
+        </ul>
+        <a class="btn btn-lg btn-ghost" href="[CHECKOUT_URL_PLAN]">Start the payment plan &rarr;</a>
+      </div>
+    </div>
+
+    <div class="narrow">
+      <p class="pay-note">Payment is handled by <span class="ph">[PAYMENT_PROVIDER]</span> &mdash; your card details never touch this page. Prices in <span class="ph">[CURRENCY]</span>. <a href="#guarantee">The guarantee</a> applies to both options: come to the first <span class="ph">[N_FIRST_SESSIONS]</span> sessions, do the homework, and if it was not worth it I refund you in full.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ APPLY — contact capture ============ -->
+<!--
+  FORM WIRING — no backend needed.
+  Point action= at any form-to-email service that accepts a normal POST:
+  Formspree, Basin, Getform, FormSubmit, or Netlify Forms if you host there.
+  Paste the endpoint into [FORM_ENDPOINT].
+  The JS at the bottom submits by fetch and shows the thank-you inline.
+  If JS is off or the fetch fails, the browser posts the form normally,
+  so you never lose a lead.
+-->
+<section id="apply">
+  <div class="wrap">
+    <div class="narrow flow">
+      <p class="eyebrow">Or apply first</p>
+      <h2>Tell me where you are stuck.</h2>
+      <p>Applying is not buying. It takes about <span class="ph">[FORM_MINUTES]</span> minutes, and I read every one myself. If I do not think this is right for you, I will tell you.</p>
+    </div>
+
+    <div class="narrow">
+      <form class="form-card" id="apply-form" method="post" action="[FORM_ENDPOINT]" novalidate>
+        <input type="hidden" name="_subject" value="Decision Room — new application">
+        <input type="hidden" name="form_name" value="application">
+        <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="ap-name">Your name <span class="req" aria-hidden="true">*</span></label>
+            <input id="ap-name" name="name" type="text" autocomplete="name" required>
+            <p class="err" id="e-ap-name">Please tell me your name.</p>
+          </div>
+          <div class="field">
+            <label for="ap-email">Email <span class="req" aria-hidden="true">*</span></label>
+            <input id="ap-email" name="email" type="email" autocomplete="email" required>
+            <p class="err" id="e-ap-email">Please check this email address.</p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="ap-phone">WhatsApp number <span class="req" aria-hidden="true">*</span>
+              <span class="hint">With country code. This is how I will reach you.</span>
+            </label>
+            <input id="ap-phone" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel" placeholder="+60 12 345 6789" required>
+            <p class="err" id="e-ap-phone">Please add a number I can reach you on.</p>
+          </div>
+          <div class="field">
+            <label for="ap-country">Where are you based? <span class="req" aria-hidden="true">*</span></label>
+            <select id="ap-country" name="country" required>
+              <option value="">Choose one</option>
+              <option>Malaysia</option>
+              <option>Singapore</option>
+              <option>Indonesia</option>
+              <option>Philippines</option>
+              <option>Thailand</option>
+              <option>Vietnam</option>
+              <option>Cambodia</option>
+              <option>Myanmar</option>
+              <option>Laos</option>
+              <option>Brunei</option>
+              <option>Somewhere else</option>
+            </select>
+            <p class="err" id="e-ap-country">Please pick a country so I can get the timezone right.</p>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="ap-role">Your current role <span class="req" aria-hidden="true">*</span></label>
+            <input id="ap-role" name="role" type="text" autocomplete="organization-title" placeholder="e.g. AVP, Finance Business Partner" required>
+            <p class="err" id="e-ap-role">Please tell me your current role.</p>
+          </div>
+          <div class="field">
+            <label for="ap-years">Years of experience <span class="req" aria-hidden="true">*</span></label>
+            <select id="ap-years" name="years" required>
+              <option value="">Choose one</option>
+              <option>Under 5 years</option>
+              <option>5 to 7 years</option>
+              <option>8 to 11 years</option>
+              <option>12 to 15 years</option>
+              <option>More than 15 years</option>
+            </select>
+            <p class="err" id="e-ap-years">Please choose one.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="ap-goal">What is the one thing you want to be different twelve months from now? <span class="req" aria-hidden="true">*</span>
+            <span class="hint">A few honest sentences is plenty. This is the part I actually read.</span>
+          </label>
+          <textarea id="ap-goal" name="goal" required></textarea>
+          <p class="err" id="e-ap-goal">Please write a line or two &mdash; it is the part I read first.</p>
+        </div>
+
+        <div class="field">
+          <label for="ap-source">How did you come across this? <span class="hint">Optional.</span></label>
+          <select id="ap-source" name="source">
+            <option value="">Prefer not to say</option>
+            <option>LinkedIn</option>
+            <option>A friend or colleague</option>
+            <option>Toastmasters</option>
+            <option>CFA network</option>
+            <option>Search</option>
+            <option>Somewhere else</option>
+          </select>
+        </div>
+
+        <div class="check">
+          <input type="checkbox" id="ap-news" name="newsletter" value="yes">
+          <label for="ap-news">Also send me the weekly letter. One email most weeks on what actually gets people promoted in Asian companies. Unsubscribe any time.</label>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-lg" type="submit">Send my application &rarr;</button>
+          <p class="form-foot">I reply personally, usually within <span class="ph">[REPLY_TIME]</span>. Your details are used only to contact you about this programme and are never sold or passed on. <a href="[PRIVACY_URL]">Privacy</a>.</p>
+        </div>
+
+        <div class="form-status" id="apply-status" role="status" aria-live="polite"></div>
+      </form>
+    </div>
+
+    <div class="narrow ps" style="border-top-color:var(--rule)">
+      <p><strong>P.S.</strong> If you are still reading, it is because a specific person came to mind while you read this &mdash; the one who talks more than they work, and is one grade above you. They are not smarter than you. They simply understood something about the Decision Room that nobody ever told you. It took me six years to see it. It takes <span class="ph">[WEEKS]</span> weeks to learn it. <strong>Applications close <span class="ph">[CLOSE_DATE]</span>.</strong></p>
+      <p><strong>P.P.S.</strong> Not ready for either? Take the letter below instead. No pitch, and you can leave whenever you like.</p>
+      <p class="form-foot">Questions first? <a href="mailto:alextee2005@gmail.com">alextee2005@gmail.com</a> &middot; <a href="[WHATSAPP_URL]">WhatsApp</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWSLETTER ============ -->
+<!--
+  NEWSLETTER WIRING
+  Paste your email provider's form action into [NEWSLETTER_ENDPOINT].
+  Mailchimp, MailerLite, ConvertKit/Kit, Buttondown and Beehiiv all give you
+  a plain POST endpoint. Turn on DOUBLE OPT-IN in the provider — it keeps
+  your sender reputation clean and is the safer reading of PDPA/GDPR consent.
+  Mailchimp note: its field name is EMAIL (uppercase), not email.
+-->
+<section class="band-dark" id="newsletter">
+  <div class="wrap">
+    <div class="narrow flow">
+      <p class="eyebrow">Not ready yet</p>
+      <h2>The Decision Room letter.</h2>
+      <p class="sub">One email most weeks. One specific thing that changes what gets said about you when you are not in the room &mdash; written for people working inside Asian companies, not American ones.</p>
+      <p class="sub">No pitch, no motivational filler. Leave in one click whenever you want.</p>
+
+      <form class="nl-form" id="nl-form" method="post" action="[NEWSLETTER_ENDPOINT]" novalidate>
+        <input type="hidden" name="form_name" value="newsletter">
+        <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+        <div class="field nl-email" style="margin-top:0">
+          <label for="nl-email" class="hp">Your email</label>
+          <input id="nl-email" name="email" type="email" autocomplete="email" placeholder="you@work.com" required>
+          <p class="err" id="e-nl-email">Please check this email address.</p>
+        </div>
+        <button class="btn" type="submit">Send it to me &rarr;</button>
+        <div class="form-status" id="nl-status" role="status" aria-live="polite" style="flex:1 1 100%"></div>
+      </form>
+      <p class="form-foot" style="max-width:34rem">By subscribing you agree to receive the letter by email. Your address is never sold or passed on. <a href="[PRIVACY_URL]" style="color:var(--dark-accent)">Privacy</a>.</p>
     </div>
   </div>
 </section>
@@ -636,8 +941,136 @@ ul.ticks li::before { content: "—"; position: absolute; left: 0; color: var(--
 
 <div class="stickybar">
   <span class="note">Closes <span class="ph">[CLOSE_DATE]</span></span>
-  <a class="btn" href="[APPLY_URL]">Apply now &rarr;</a>
+  <a class="btn" href="#enrol">Take a place &rarr;</a>
 </div>
 
+
+<script>
+/* ---------------------------------------------------------------------------
+   Form handling. Progressive enhancement only:
+   - Without JS, both forms post normally to their action= endpoint.
+   - With JS, they post by fetch and show the result inline, so the visitor
+     never leaves the page.
+   - If the endpoint is still an unfilled [PLACEHOLDER], we block the submit
+     and say so loudly, so you notice during testing instead of losing leads.
+--------------------------------------------------------------------------- */
+(function () {
+  "use strict";
+
+  var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+  function setInvalid(field, bad) {
+    if (!field) return;
+    field.classList.toggle("invalid", bad);
+    var input = field.querySelector("input, select, textarea");
+    if (input) input.setAttribute("aria-invalid", bad ? "true" : "false");
+  }
+
+  function validate(form) {
+    var firstBad = null;
+    var controls = form.querySelectorAll("input[required], select[required], textarea[required]");
+    Array.prototype.forEach.call(controls, function (el) {
+      var field = el.closest(".field");
+      var value = (el.value || "").trim();
+      var bad = !value || (el.type === "email" && !EMAIL.test(value));
+      setInvalid(field, bad);
+      if (bad && !firstBad) firstBad = el;
+    });
+    if (firstBad) {
+      firstBad.focus();
+      firstBad.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+    return !firstBad;
+  }
+
+  function status(box, kind, title, body) {
+    if (!box) return;
+    box.className = "form-status show " + kind;
+    box.innerHTML = "<strong></strong><span></span>";
+    box.querySelector("strong").textContent = title;
+    box.querySelector("span").textContent = body;
+  }
+
+  function wire(formId, statusId, opts) {
+    var form = document.getElementById(formId);
+    if (!form) return;
+    var box = document.getElementById(statusId);
+
+    form.addEventListener("submit", function (e) {
+      var action = form.getAttribute("action") || "";
+
+      // Endpoint not configured yet — stop, and make it obvious.
+      if (!action || /^\[.*\]$/.test(action.trim())) {
+        e.preventDefault();
+        status(box, "bad", "This form is not connected yet.",
+          "Set the form action to your form endpoint. See the wiring comment above this section in the HTML.");
+        console.warn("[decision-room] " + formId + ' has an unconfigured action: "' + action + '"');
+        return;
+      }
+
+      if (!validate(form)) { e.preventDefault(); return; }
+
+      // fetch is optional: if unsupported, let the browser post normally.
+      if (typeof window.fetch !== "function") return;
+
+      e.preventDefault();
+      var button = form.querySelector('button[type="submit"]');
+      var label = button ? button.textContent : "";
+      if (button) { button.disabled = true; button.textContent = opts.sending; }
+      status(box, "ok", opts.sending, "One moment.");
+
+      fetch(action, {
+        method: "POST",
+        body: new FormData(form),
+        headers: { Accept: "application/json" }
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          form.reset();
+          Array.prototype.forEach.call(form.querySelectorAll(".field"), function (fl) {
+            setInvalid(fl, false);
+          });
+          status(box, "ok", opts.okTitle, opts.okBody);
+          if (opts.hideOnSuccess) {
+            Array.prototype.forEach.call(
+              form.querySelectorAll(".form-row, .field, .check, .form-actions"),
+              function (el) { el.hidden = true; }
+            );
+          }
+        })
+        .catch(function (err) {
+          console.error("[decision-room] submit failed", err);
+          status(box, "bad", "That did not go through.",
+            opts.failBody);
+        })
+        .finally(function () {
+          if (button) { button.disabled = false; button.textContent = label; }
+        });
+    });
+
+    // clear the error state as soon as they start fixing it
+    form.addEventListener("input", function (e) {
+      var field = e.target.closest(".field.invalid");
+      if (field) setInvalid(field, false);
+    });
+  }
+
+  wire("apply-form", "apply-status", {
+    sending: "Sending your application…",
+    okTitle: "Got it — thank you.",
+    okBody: "I read every application myself and will come back to you personally. Check your email, and your spam folder just in case.",
+    failBody: "Please email me directly at alextee2005@gmail.com and I will pick it up from there.",
+    hideOnSuccess: true
+  });
+
+  wire("nl-form", "nl-status", {
+    sending: "Signing you up…",
+    okTitle: "You are on the list.",
+    okBody: "Check your inbox and confirm the subscription — the first letter follows after that.",
+    failBody: "Please email me at alextee2005@gmail.com and I will add you by hand.",
+    hideOnSuccess: false
+  });
+})();
+</script>
 </body>
 </html>
