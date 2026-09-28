@@ -29,6 +29,9 @@
 
   STATUS as of this commit: all supplied values are filled in.
 
+  Both form endpoints are wired (FormSubmit + Kit). Append ?debug=1 to the
+  URL for a live diagnostic panel; decisionRoomDiagnostics() dumps the trace.
+
   STILL OUTSTANDING
   1.  CHECKOUT LINKS — both pricing buttons currently route to the application
       form, because no payment link exists yet. Once you create the ABA PayWay
@@ -767,10 +770,11 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     </div>
 
     <div class="narrow">
-      <form class="form-card" id="apply-form" method="post" action="https://formsubmit.co/el/colape" novalidate>
+      <form class="form-card" id="apply-form" method="post" action="https://formsubmit.co/alextee2005@gmail.com" novalidate>
         <input type="hidden" name="_subject" value="Decision Room — new application">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="">
         <input type="hidden" name="form_name" value="application">
         <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
 
@@ -896,8 +900,9 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
       <p class="sub">One email most weeks. One specific thing that changes what gets said about you when you are not in the room &mdash; written for people working inside Asian companies, not American ones.</p>
       <p class="sub">No pitch, no motivational filler. Leave in one click whenever you want.</p>
 
-      <form class="nl-form" id="nl-form" method="post" action="https://alex-tee-cfa.kit.com/dbc9d4be2f" novalidate>
+      <form class="nl-form" id="nl-form" method="post" action="https://app.kit.com/forms/9971330/subscriptions" novalidate>
         <input type="hidden" name="form_name" value="newsletter">
+        <input type="hidden" name="email_address" value="">
         <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
         <div class="field nl-email" style="margin-top:0">
           <label for="nl-email" class="hp">Your email</label>
@@ -930,130 +935,319 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
 
 
 <script>
-/* ---------------------------------------------------------------------------
-   Form handling. Progressive enhancement only:
-   - Without JS, both forms post normally to their action= endpoint.
-   - With JS, they post by fetch and show the result inline, so the visitor
-     never leaves the page.
-   - If the endpoint is still an unfilled [PLACEHOLDER], we block the submit
-     and say so loudly, so you notice during testing instead of losing leads.
---------------------------------------------------------------------------- */
+/* ===========================================================================
+   Form transport + diagnostics.
+
+   Every step of a submit emits a stable code so a failure can be identified
+   from the page alone. Codes are shown to the visitor, logged to the console,
+   and — with ?debug=1 on the URL — listed in an on-page panel.
+
+     DR-ENV-1xx   environment / page-load checks
+     DR-<F>-0xx   submit lifecycle      DR-<F>-1xx   validation
+     DR-<F>-2xx   endpoint config       DR-<F>-3xx   transport / network
+     DR-<F>-H<n>  HTTP status n returned by the endpoint (H200, H403, H500 ...)
+     DR-<F>-9xx   success
+   where <F> is APP (application form) or NL (newsletter).
+
+   Transport is fetch-first with a NATIVE FORM POST FALLBACK. A native POST is
+   not subject to CORS, so if the endpoint refuses cross-origin fetch the lead
+   still reaches the inbox instead of being lost.
+=========================================================================== */
 (function () {
   "use strict";
 
+  var DEBUG   = /[?&]debug=1\b/.test(location.search);
+  var TIMEOUT = 15000;
+  var TRACE   = [];
+  var T0      = Date.now();
+
+  /* ---------- diagnostics ---------- */
+  function diag(level, code, message, detail) {
+    var e = { ms: Date.now() - T0, level: level, code: code, message: message, detail: detail };
+    TRACE.push(e);
+    var line = "[" + code + "] " + message;
+    (level === "error" ? console.error : level === "warn" ? console.warn : console.info)(line, detail === undefined ? "" : detail);
+    if (DEBUG) paint();
+    return e;
+  }
+  window.decisionRoomDiagnostics = function () { return TRACE.slice(); };
+
+  var panel;
+  function paint() {
+    if (!panel) {
+      panel = document.createElement("div");
+      panel.id = "dr-diag";
+      panel.setAttribute("style",
+        "position:fixed;left:0;bottom:0;z-index:9999;max-height:45vh;width:min(100%,46rem);" +
+        "overflow:auto;background:#0b141c;color:#cfe3ee;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;" +
+        "border-top:2px solid #62b4d2;border-right:2px solid #62b4d2;padding:.6rem .8rem");
+      document.body.appendChild(panel);
+    }
+    var colour = { info: "#9fd8ee", warn: "#e8c07d", error: "#f2907f", ok: "#8fe0b0" };
+    panel.innerHTML = "<strong style='color:#fff'>Decision Room diagnostics</strong> "
+      + "<span style='opacity:.6'>(?debug=1)</span><br>"
+      + TRACE.map(function (e) {
+          return "<span style='opacity:.5'>+" + String(e.ms).padStart(5) + "ms</span> "
+            + "<span style='color:" + (colour[e.level] || "#cfe3ee") + "'>" + esc(e.code) + "</span> "
+            + esc(e.message)
+            + (e.detail === undefined ? "" : " <span style='opacity:.65'>" + esc(typeof e.detail === "string" ? e.detail : JSON.stringify(e.detail)) + "</span>");
+        }).join("<br>");
+    panel.scrollTop = panel.scrollHeight;
+  }
+  function esc(v) {
+    return String(v).replace(/[&<>]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]; });
+  }
+
+  /* ---------- environment ---------- */
+  diag("info", "DR-ENV-100", "Page origin", location.origin + " (" + location.protocol + ")");
+  if (location.protocol === "file:") {
+    diag("warn", "DR-ENV-101",
+      "Opened from the filesystem. Origin is null, so EVERY cross-origin POST will be blocked by the browser. Test over http(s), not by double-clicking the file.");
+  }
+  if (typeof window.fetch !== "function") {
+    diag("warn", "DR-ENV-102", "fetch unavailable; every submit will use the native form POST path.");
+  }
+
+  /* ---------- endpoint inspection ----------
+     Catches the two misconfigurations that silently break these forms:
+     a FormSubmit HTML endpoint used for AJAX, and a Kit landing-page URL
+     used in place of a Kit subscribe endpoint.                        */
+  function inspect(action, tag) {
+    var r = { usable: true, fetchUrl: action, nativeOk: true, code: null };
+
+    if (!action || /^\[.*\]$/.test(action.trim())) {
+      r.usable = false; r.nativeOk = false; r.code = "DR-" + tag + "-200";
+      diag("error", r.code, "Endpoint is still an unfilled placeholder.", action);
+      return r;
+    }
+
+    var url;
+    try { url = new URL(action, location.href); }
+    catch (err) {
+      r.usable = false; r.nativeOk = false; r.code = "DR-" + tag + "-201";
+      diag("error", r.code, "Endpoint is not a valid URL.", action);
+      return r;
+    }
+
+    if (url.protocol !== "https:") {
+      diag("warn", "DR-" + tag + "-202", "Endpoint is not HTTPS.", url.protocol);
+    }
+
+    // FormSubmit: /el/<token> and /<email> are HTML-form endpoints and send no
+    // CORS headers. /ajax/<token> is the one that answers fetch with JSON.
+    var fs = url.hostname.replace(/^www\./, "") === "formsubmit.co";
+    if (fs && !/^\/ajax\//.test(url.pathname)) {
+      r.fetchUrl = url.origin + "/ajax/" + url.pathname.replace(/^\/(el\/)?/, "") + url.search;
+      diag("warn", "DR-" + tag + "-203",
+        "FormSubmit HTML endpoint given; fetch will use the /ajax/ form instead, and fall back to a native POST if that is refused.",
+        { given: url.pathname, tryingInstead: r.fetchUrl });
+    }
+
+    // Kit / ConvertKit: only /forms/<id>/subscriptions accepts a subscribe POST.
+    var kit = /(^|\.)kit\.com$/.test(url.hostname) || /(^|\.)convertkit\.com$/.test(url.hostname);
+    if (kit && !/\/forms\/[^/]+\/subscriptions\/?$/.test(url.pathname)) {
+      r.usable = false; r.nativeOk = false; r.code = "DR-" + tag + "-204";
+      diag("error", r.code,
+        "This is a Kit LANDING PAGE URL, not a subscribe endpoint. It can never accept a signup POST. Needed: https://app.kit.com/forms/<FORM_ID>/subscriptions — copy it from the action= attribute of Kit's HTML embed code.",
+        url.href);
+      return r;
+    }
+
+    diag("info", "DR-" + tag + "-205", "Endpoint accepted.", r.fetchUrl);
+    return r;
+  }
+
+  /* ---------- form helpers ---------- */
   var EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-  function setInvalid(field, bad) {
+  function mark(field, bad) {
     if (!field) return;
     field.classList.toggle("invalid", bad);
-    var input = field.querySelector("input, select, textarea");
-    if (input) input.setAttribute("aria-invalid", bad ? "true" : "false");
+    var i = field.querySelector("input, select, textarea");
+    if (i) i.setAttribute("aria-invalid", bad ? "true" : "false");
   }
 
-  function validate(form) {
-    var firstBad = null;
-    var controls = form.querySelectorAll("input[required], select[required], textarea[required]");
-    Array.prototype.forEach.call(controls, function (el) {
-      var field = el.closest(".field");
-      var value = (el.value || "").trim();
-      var bad = !value || (el.type === "email" && !EMAIL.test(value));
-      setInvalid(field, bad);
-      if (bad && !firstBad) firstBad = el;
+  function validate(form, tag) {
+    var first = null, bad = [];
+    Array.prototype.forEach.call(form.querySelectorAll("input[required], select[required], textarea[required]"), function (el) {
+      var field = el.closest(".field"), v = (el.value || "").trim();
+      var no = !v || (el.type === "email" && !EMAIL.test(v));
+      mark(field, no);
+      if (no) { bad.push(el.name || el.id); if (!first) first = el; }
     });
-    if (firstBad) {
-      firstBad.focus();
-      firstBad.scrollIntoView({ block: "center", behavior: "smooth" });
+    if (first) {
+      diag("warn", "DR-" + tag + "-100", "Validation failed; nothing sent.", bad);
+      first.focus();
+      first.scrollIntoView({ block: "center", behavior: "smooth" });
+      return false;
     }
-    return !firstBad;
+    diag("info", "DR-" + tag + "-101", "Validation passed.");
+    return true;
   }
 
-  function status(box, kind, title, body) {
+  function show(box, kind, title, body, code) {
     if (!box) return;
     box.className = "form-status show " + kind;
-    box.innerHTML = "<strong></strong><span></span>";
-    box.querySelector("strong").textContent = title;
-    box.querySelector("span").textContent = body;
+    box.innerHTML = "";
+    var s = document.createElement("strong"); s.textContent = title; box.appendChild(s);
+    var p = document.createElement("span"); p.textContent = body; box.appendChild(p);
+    if (code) {
+      var c = document.createElement("span");
+      c.setAttribute("style", "display:block;margin-top:.5rem;font-family:var(--mono);font-size:.78rem;opacity:.75");
+      c.textContent = "Reference: " + code;
+      box.appendChild(c);
+    }
   }
 
-  function wire(formId, statusId, opts) {
+  /* ---------- pre-submit field sync ----------
+     Runs for both the fetch and the native path, so a fallback POST carries
+     exactly the same payload the fetch would have.                        */
+  function syncFields(form, tag) {
+    if (tag === "NL") {
+      var em = form.querySelector('input[name="email"]');
+      var alt = form.querySelector('input[name="email_address"]');
+      if (em && alt) { alt.value = em.value; diag("info", "DR-NL-102", "Mirrored email into email_address for Kit."); }
+    }
+    var next = form.querySelector('input[name="_next"]');
+    if (next && location.protocol !== "file:") {
+      next.value = location.origin + location.pathname + "?sent=application";
+      diag("info", "DR-" + tag + "-103", "Return URL set for the native fallback.", next.value);
+    }
+  }
+
+  /* A native fallback POST leaves the page; FormSubmit sends the visitor back
+     with ?sent=application. Show the thank-you so the round trip is seamless. */
+  (function returning() {
+    if (!/[?&]sent=application\b/.test(location.search)) return;
+    var box = document.getElementById("apply-status");
+    var form = document.getElementById("apply-form");
+    diag("ok", "DR-APP-901", "Returned from a native POST; showing confirmation.");
+    if (form) {
+      Array.prototype.forEach.call(form.querySelectorAll(".form-row, .field, .check, .form-actions"),
+        function (el) { el.hidden = true; });
+    }
+    show(box, "ok", "Got it \u2014 thank you.",
+      "I read every application myself and will come back to you personally. Check your email, and your spam folder just in case.");
+    if (box) box.scrollIntoView({ block: "center" });
+  })();
+
+  /* ---------- wiring ---------- */
+  function wire(formId, statusId, tag, copy) {
     var form = document.getElementById(formId);
     if (!form) return;
     var box = document.getElementById(statusId);
+    var ep  = inspect(form.getAttribute("action") || "", tag);
+
+    form.addEventListener("input", function (e) {
+      var f = e.target.closest(".field.invalid");
+      if (f) mark(f, false);
+    });
 
     form.addEventListener("submit", function (e) {
-      var action = form.getAttribute("action") || "";
+      diag("info", "DR-" + tag + "-000", "Submit started.");
 
-      // Endpoint not configured yet — stop, and make it obvious.
-      if (!action || /^\[.*\]$/.test(action.trim())) {
+      if (!ep.usable) {
         e.preventDefault();
-        status(box, "bad", "This form is not connected yet.",
-          "Set the form action to your form endpoint. See the wiring comment above this section in the HTML.");
-        console.warn("[decision-room] " + formId + ' has an unconfigured action: "' + action + '"');
+        show(box, "bad", copy.configTitle, copy.configBody, ep.code);
         return;
       }
-
-      if (!validate(form)) { e.preventDefault(); return; }
-
-      // fetch is optional: if unsupported, let the browser post normally.
-      if (typeof window.fetch !== "function") return;
+      if (!validate(form, tag)) { e.preventDefault(); return; }
+      syncFields(form, tag);
+      if (typeof window.fetch !== "function") {
+        diag("warn", "DR-" + tag + "-300", "No fetch; submitting natively.");
+        return;                                  // browser performs the POST
+      }
 
       e.preventDefault();
-      var button = form.querySelector('button[type="submit"]');
-      var label = button ? button.textContent : "";
-      if (button) { button.disabled = true; button.textContent = opts.sending; }
-      status(box, "ok", opts.sending, "One moment.");
+      var btn = form.querySelector('button[type="submit"]'), label = btn ? btn.textContent : "";
+      if (btn) { btn.disabled = true; btn.textContent = copy.sending; }
+      show(box, "ok", copy.sending, "One moment.");
 
-      fetch(action, {
+      var ctrl = typeof AbortController === "function" ? new AbortController() : null;
+      var timer = setTimeout(function () {
+        diag("error", "DR-" + tag + "-302", "Timed out after " + TIMEOUT + "ms.");
+        if (ctrl) ctrl.abort();
+      }, TIMEOUT);
+
+      diag("info", "DR-" + tag + "-301", "POST dispatched.", ep.fetchUrl);
+      var started = Date.now();
+
+      fetch(ep.fetchUrl, {
         method: "POST",
         body: new FormData(form),
-        headers: { Accept: "application/json" }
+        headers: { Accept: "application/json" },
+        signal: ctrl ? ctrl.signal : undefined
       })
         .then(function (res) {
-          if (!res.ok) throw new Error("HTTP " + res.status);
+          clearTimeout(timer);
+          diag(res.ok ? "ok" : "error", "DR-" + tag + "-H" + res.status,
+               "HTTP " + res.status + " " + (res.statusText || "") + " in " + (Date.now() - started) + "ms.");
+          if (!res.ok) { var err = new Error("HTTP " + res.status); err.status = res.status; throw err; }
+          return res.text();
+        })
+        .then(function (body) {
+          diag("ok", "DR-" + tag + "-900", "Accepted by the endpoint.", body.slice(0, 160));
           form.reset();
-          Array.prototype.forEach.call(form.querySelectorAll(".field"), function (fl) {
-            setInvalid(fl, false);
-          });
-          status(box, "ok", opts.okTitle, opts.okBody);
-          if (opts.hideOnSuccess) {
-            Array.prototype.forEach.call(
-              form.querySelectorAll(".form-row, .field, .check, .form-actions"),
-              function (el) { el.hidden = true; }
-            );
+          Array.prototype.forEach.call(form.querySelectorAll(".field"), function (f) { mark(f, false); });
+          show(box, "ok", copy.okTitle, copy.okBody);
+          if (copy.hideOnSuccess) {
+            Array.prototype.forEach.call(form.querySelectorAll(".form-row, .field, .check, .form-actions"),
+              function (el) { el.hidden = true; });
           }
         })
         .catch(function (err) {
-          console.error("[decision-room] submit failed", err);
-          status(box, "bad", "That did not go through.",
-            opts.failBody);
-        })
-        .finally(function () {
-          if (button) { button.disabled = false; button.textContent = label; }
-        });
-    });
+          clearTimeout(timer);
+          var aborted = err && err.name === "AbortError";
+          var http    = err && err.status;
 
-    // clear the error state as soon as they start fixing it
-    form.addEventListener("input", function (e) {
-      var field = e.target.closest(".field.invalid");
-      if (field) setInvalid(field, false);
+          if (!http && !aborted) {
+            // No status means the request never completed: CORS, DNS, offline
+            // or a blocked host. A native POST is exempt from CORS, so retry
+            // that way rather than losing the submission.
+            diag("error", "DR-" + tag + "-303",
+              "Network or CORS failure — no HTTP response reached the page. Falling back to a native form POST.", String(err));
+            show(box, "ok", copy.sending, "Still sending…");
+            var f2 = form.cloneNode(true);
+            f2.setAttribute("action", form.getAttribute("action"));   // native path uses the ORIGINAL url
+            f2.setAttribute("method", "post");
+            f2.style.display = "none";
+            document.body.appendChild(f2);
+            diag("info", "DR-" + tag + "-304", "Native POST submitted.", form.getAttribute("action"));
+            f2.submit();
+            return;
+          }
+
+          diag("error", "DR-" + tag + "-399", "Submit failed.", String(err));
+          show(box, "bad", copy.failTitle, copy.failBody,
+               aborted ? "DR-" + tag + "-302" : "DR-" + tag + "-H" + http);
+        })
+        .finally(function () { if (btn) { btn.disabled = false; btn.textContent = label; } });
     });
   }
 
-  wire("apply-form", "apply-status", {
+  wire("apply-form", "apply-status", "APP", {
     sending: "Sending your application…",
     okTitle: "Got it — thank you.",
     okBody: "I read every application myself and will come back to you personally. Check your email, and your spam folder just in case.",
+    failTitle: "That did not go through.",
     failBody: "Please email me directly at alextee2005@gmail.com and I will pick it up from there.",
+    configTitle: "This form is not connected yet.",
+    configBody: "Please email me at alextee2005@gmail.com in the meantime — I will pick it up from there.",
     hideOnSuccess: true
   });
 
-  wire("nl-form", "nl-status", {
+  wire("nl-form", "nl-status", "NL", {
     sending: "Signing you up…",
     okTitle: "You are on the list.",
     okBody: "Check your inbox and confirm the subscription — the first letter follows after that.",
+    failTitle: "That did not go through.",
     failBody: "Please email me at alextee2005@gmail.com and I will add you by hand.",
+    configTitle: "Signup is not connected yet.",
+    configBody: "Please email me at alextee2005@gmail.com and I will add you by hand.",
     hideOnSuccess: false
   });
+
+  diag("info", "DR-ENV-199", "Diagnostics ready. Run decisionRoomDiagnostics() in the console for the full trace.");
 })();
 </script>
 </body>
