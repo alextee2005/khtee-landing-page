@@ -82,6 +82,33 @@ Pronouns: she/her.
 - **JR Reyes, 31, Manila.** Team lead in a global capability centre. Reports into a manager in Chicago whom he has met once. His extra fear: being permanently "back office" to a head office that doesn't know his name.
 - **Sophal Chan, 29, Phnom Penh.** Senior officer at a local bank. Younger, hungrier, less cash. Best served by the payment plan and by Alex's local presence.
 
+### 1.2b Positioning decision: wide funnel, mid-career voice
+
+The page accepts applicants from **3+ years' experience**, but the copy is
+written for the core avatar above — roughly 8–12 years in. This mismatch is
+deliberate, not an oversight. Cast wide, speak to one.
+
+The reasoning: a narrow eligibility line turns away people who would have
+thrived, while copy written for everybody moves nobody. Rachel is the person
+the words are aimed at; the 3-year floor just stops the door being shut on
+someone two grades below her with the same problem.
+
+What this costs, and how it is managed:
+
+- **Lead quality drops.** Expect applicants who do not recognise themselves in
+  the lead story because they have never had a promotion cycle. That is the
+  price of the wider door.
+- **Screening happens on the form, not the page.** The experience selector has
+  an explicit "Under 3 years" band so under-qualified applicants are visible
+  rather than hidden inside a broad bucket, and the free-text question ("what
+  do you want to be different twelve months from now?") separates the serious
+  from the curious better than any eligibility rule.
+- **Watch the ratio.** If a large share of applications come from the 3–4 year
+  band and they convert poorly on the call, that is the signal to either raise
+  the floor or write a second page for the earlier-career segment. Do not fix
+  it by diluting this page's copy — that loses the core avatar without
+  reliably winning the younger one.
+
 ### 1.3 The one sentence the whole campaign hangs on
 
 > *She was taught that excellent work would be noticed. It is not being noticed. And she has been taught that fixing this — being seen — is shameful.*

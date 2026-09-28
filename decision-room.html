@@ -8,7 +8,7 @@
 <meta name="author" content="Alex Tee">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Five people are deciding your promotion. You are not in the room.">
-<meta property="og:description" content="A high-performance coaching programme for Southeast Asian professionals with 8+ years' experience. Led by Alex Tee, CFA.">
+<meta property="og:description" content="A high-performance coaching programme for Southeast Asian professionals with 3+ years' experience. Led by Alex Tee, CFA.">
 <meta property="og:type" content="website">
 <!-- <meta property="og:image" content="[OG_IMAGE_URL — 1200x630]"> -->
 <!-- <meta property="og:url" content="[PAGE_URL]"> -->
@@ -27,40 +27,21 @@
   They are visually highlighted on the page by the .ph class so you can find
   them. Search the file for "[" to list them all.
 
-  LAUNCH CHECKLIST
+  STATUS as of this commit: all supplied values are filled in.
 
-  WIRING (nothing works until these three are set)
-  1.  [FORM_ENDPOINT]       -> application form POST endpoint
-                               (Formspree / Basin / Getform / Netlify Forms)
-  2.  [NEWSLETTER_ENDPOINT] -> your email provider's form action
-                               (Mailchimp / MailerLite / Kit / Buttondown)
-                               Mailchimp uses EMAIL uppercase as the field name.
-  3.  [CHECKOUT_URL_FULL] and [CHECKOUT_URL_PLAN]
-                            -> hosted payment links. See the note above the
-                               #enrol section about provider country support.
-
-  MONEY
-  4.  [PRICE] [PRICE_3X] [PRICE_PLAN_TOTAL] [SAVING] [CURRENCY]
-  5.  [PAYMENT_PROVIDER] [PROMO_VALUE] [PAYBACK_MULTIPLE] [SALARY_SOURCE]
-
-  COHORT
-  6.  [N_PLACES] [N_TAKEN] [CLOSE_DATE] [COHORT_MONTH] [START_DATE]
-  7.  [N_SESSIONS] [DAY] [TIME] [TZ] [MINUTES] [PLATFORM] [WEEKS] [HOURS_WK]
-  8.  [N_ONE_TO_ONE] [MIN_YEARS] [N_FIRST_SESSIONS] [COUNTRIES] [SPECIFIC_EXTRA]
-
-  CONTACT & LEGAL
-  9.  [WHATSAPP_URL]  -> https://wa.me/85517999810 (verify the number)
-  10. [PRIVACY_URL]   -> a real privacy page. You are collecting names,
-                         emails and phone numbers, so you need one.
-  11. [REPLY_TIME] [FORM_MINUTES] [HOURS]
-
-  BEFORE YOU GO LIVE
-  12. Proof section: swap the founding-cohort block for real testimonials as
-      soon as you have them. Never invent one.
-  13. Delete the .ph highlight styling (marked below) once all brackets are gone.
-  14. Submit both forms yourself and confirm the email arrives.
-  15. Turn on double opt-in in your email provider.
-  16. Add analytics. Test on a real phone.
+  STILL OUTSTANDING
+  1.  CHECKOUT LINKS — both pricing buttons currently route to the application
+      form, because no payment link exists yet. Once you create the ABA PayWay
+      links, send them and the buttons flip back to direct checkout.
+        Search for:  href="#apply">Apply &mdash; paying in full
+                     href="#apply">Apply &mdash; payment plan
+  2.  PROOF — still the founding-cohort frame. Replace with real named
+      testimonials as soon as you have them. Never invent one.
+  3.  SOCIAL PREVIEW — og:image and og:url are still commented out in the head.
+      Supply a 1200x630 image and the final URL to enable them.
+  4.  privacy.html is a DRAFT. Read it before you publish; it makes factual
+      claims about how you handle data that only you can confirm.
+  5.  Add analytics. Test both forms end to end on a real phone.
   ============================================================================
 -->
 
@@ -374,19 +355,19 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
 <!-- ============ HERO ============ -->
 <section class="band-dark hero">
   <div class="wrap">
-    <p class="eyebrow">For Southeast Asian professionals, 8+ years in</p>
+    <p class="eyebrow">For Southeast Asian professionals, 3+ years in</p>
     <h1>Five people are in a room deciding your promotion. You are not in that room. You never will be.</h1>
     <p class="sub">You cannot get into the room. You <em>can</em> change what is said in it. Here is how — from a CFA charterholder who sits in those rooms every week, and who spent his first six years locked out of them.</p>
 
     <div class="cta-block">
       <a class="btn btn-lg" href="#enrol">Take a place &rarr;</a>
-      <p class="cta-sub"><span class="ph">[N_PLACES]</span> places · Applications close <span class="ph">[CLOSE_DATE]</span></p>
+      <p class="cta-sub">10 places · Applications close 31 October</p>
     </div>
 
     <dl class="facts">
       <div><dt>Led by</dt><dd>Alex Tee, CFA</dd></div>
-      <div><dt>Format</dt><dd><span class="ph">[WEEKS]</span> weeks · <span class="ph">[N_PLACES]</span> people · live</dd></div>
-      <div><dt>Time cost</dt><dd><span class="ph">[HOURS_WK]</span> hours a week</dd></div>
+      <div><dt>Format</dt><dd>52 weeks · 10 people · live</dd></div>
+      <div><dt>Time cost</dt><dd>3 hours a week</dd></div>
       <div><dt>Built for</dt><dd>Southeast Asia</dd></div>
     </dl>
   </div>
@@ -421,7 +402,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     <p>That advice worked when there were more chairs than people. Today there are forty qualified people for every chair. AI is quietly taking over the parts of your job you were proudest of. And the person who decides who gets that chair has never once watched you work.</p>
     <p>They have only heard <em>about</em> you. Second-hand. In a room. For about ninety seconds.</p>
     <p class="pull">Those ninety seconds are your career.</p>
-    <p>You have spent nine years working on your work. You have spent zero minutes working on what is said about your work when you are not there.</p>
+    <p>You have spent your whole career working on your work. You have spent zero minutes working on what is said about your work when you are not there.</p>
     <p class="big">That is the whole gap. That is all of it.</p>
   </div>
 </section>
@@ -450,7 +431,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     <p>Fair. Most of them have never managed a budget, never sat on a board, never had to walk into a CEO's office with bad news. You should be suspicious. I would be. Everything I claim below is on my LinkedIn and can be checked in ten minutes. Please check it.</p>
 
     <h3>&ldquo;I don't have the time.&rdquo;</h3>
-    <p>Also fair. You have a job, a small child, and parents who call. So the programme is <span class="ph">[HOURS_WK]</span> hours a week, at <span class="ph">[DAY]</span> <span class="ph">[TIME]</span>, recorded. That's it. If you cannot find <span class="ph">[HOURS_WK]</span> hours a week, do not apply — you will waste your money and I will have wasted my place.</p>
+    <p>Also fair. You have a job, a small child, and parents who call. So the programme is 3 hours a week, at Monday 7:00pm, recorded. That's it. If you cannot find 3 hours a week, do not apply — you will waste your money and I will have wasted my place.</p>
 
     <h3>&ldquo;Isn't promoting yourself a bit arrogant?&rdquo;</h3>
     <p>This is the real one. And it is the most Asian objection there is.</p>
@@ -532,7 +513,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
 
     <div class="card card-brass">
       <h3>And here is something I should probably not admit.</h3>
-      <p>I am not a full-time coach. I have a demanding job and a board seat. That is why I take <span class="ph">[N_PLACES]</span> people and no more. If you want a cheap course with 4,000 students in a Facebook group, this is genuinely not it.</p>
+      <p>I am not a full-time coach. I have a demanding job and a board seat. That is why I take 10 people and no more. If you want a cheap course with 4,000 students in a Facebook group, this is genuinely not it.</p>
     </div>
   </div>
 </section>
@@ -545,15 +526,15 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
       <h2>Exactly what you get.</h2>
     </div>
     <ul class="ledger">
-      <li><div class="rail">Live</div><div><h3><span class="ph">[N_SESSIONS]</span> live group sessions</h3><p><span class="ph">[DAY]</span> at <span class="ph">[TIME]</span> <span class="ph">[TZ]</span>, <span class="ph">[MINUTES]</span> minutes each, on <span class="ph">[PLATFORM]</span>. All recorded.</p></div></li>
-      <li><div class="rail">1-to-1</div><div><h3><span class="ph">[N_ONE_TO_ONE]</span> private sessions with me</h3><p>Your situation, your boss, your promotion case. Not a group Q&amp;A.</p></div></li>
-      <li><div class="rail">Tools</div><div><h3>The Decision Room Playbook</h3><p><span class="ph">[The scripts, the one-page self-advocacy template, the AI prompt library, the promotion-case model]</span></p></div></li>
+      <li><div class="rail">Live</div><div><h3>26 live group sessions</h3><p>Monday at 7:00pm GMT+7 (Phnom Penh), 120 minutes each, on Zoom. All recorded.</p></div></li>
+      <li><div class="rail">1-to-1</div><div><h3>4 private sessions with me</h3><p>Your situation, your boss, your promotion case. Not a group Q&amp;A.</p></div></li>
+      <li><div class="rail">Tools</div><div><h3>The Decision Room Playbook</h3><p>The AI prompt library and the promotion-case model.</p></div></li>
       <li><div class="rail">Marked</div><div><h3>Homework that is actually marked</h3><p>You submit, I read it, you get it back with comments. This is the part that makes people finish.</p></div></li>
-      <li><div class="rail">Network</div><div><h3>A group with <span class="ph">[N_PLACES]</span> peers across <span class="ph">[COUNTRIES]</span></h3><p>The network is part of the product, not a bonus.</p></div></li>
+      <li><div class="rail">Network</div><div><h3>A group with 10 peers across Malaysia, Singapore, Indonesia and Cambodia</h3><p>The network is part of the product, not a bonus.</p></div></li>
       <li><div class="rail">Keep</div><div><h3>Lifetime access</h3><p>Recordings, materials, and every future update.</p></div></li>
     </ul>
     <div class="narrow" style="margin-top:1.75rem">
-      <p class="big">Total time commitment: about <span class="ph">[HOURS_WK]</span> hours a week for <span class="ph">[WEEKS]</span> weeks.</p>
+      <p class="big">Total time commitment: about 3 hours a week for 52 weeks.</p>
       <p class="muted" style="margin-top:0.5rem">I am telling you the cost in hours because if you cannot pay it, nothing else matters.</p>
     </div>
   </div>
@@ -574,9 +555,9 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     -->
     <div class="card">
       <p>I have taught these six things to more than 100 staff inside my own bank and to the members I mentor at Toastmasters. This is the first time I have put them together as one programme and opened it to the public.</p>
-      <p>That is why this cohort is <span class="ph">[N_PLACES]</span> people, why the price is <span class="ph">[PRICE]</span> instead of the <span class="ph">[FUTURE_PRICE]</span> it will be next year, and why this cohort gets <span class="ph">[SPECIFIC_EXTRA]</span>.</p>
+      <p>That is why this cohort is 10 people, why the price is USD 600 instead of the USD 900 it will be next year, and why this cohort gets an extra 1-to-1 goal setting and review session.</p>
       <p>In exchange I want your honest feedback and, if you're happy, your testimonial. <strong>You are getting more of my attention than anyone who joins after you ever will.</strong></p>
-      <p class="card-note">Founding cohort · <span class="ph">[START_DATE]</span></p>
+      <p class="card-note">Founding cohort · 10 November 2026</p>
     </div>
   </div>
 </section>
@@ -589,11 +570,11 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     <p class="muted">Most people reading this need to have one conversation at home first. So here is that conversation, written out. Screenshot it.</p>
 
     <div class="card card-brass">
-      <p class="big">This programme costs <span class="ph">[PRICE]</span>, or <span class="ph">[PRICE_3X]</span> a month for three months.</p>
-      <p>One promotion from Manager to Senior Manager is worth roughly <span class="ph">[PROMO_VALUE]</span> a year — every year — and it compounds into every salary after it. If this programme brings that promotion forward by even twelve months, it pays for itself <span class="ph">[PAYBACK_MULTIPLE]</span> times over in the first year alone.</p>
+      <p class="big">This programme costs USD 600, or USD 250 a month for three months.</p>
+      <p>One promotion from Manager to Senior Manager is worth roughly RM 24,000 a year — every year — and it compounds into every salary after it. If this programme brings that promotion forward by even twelve months, it pays for itself nine times over in the first year alone.</p>
       <p>If it does not work, there is a full refund. The terms are below and they are simple.</p>
-      <p>The real cost is <span class="ph">[HOURS_WK]</span> hours a week for <span class="ph">[WEEKS]</span> weeks, on <span class="ph">[DAY]</span> evenings.</p>
-      <p class="card-note">Salary figures: <span class="ph">[SALARY_SOURCE — cite a real published salary guide]</span></p>
+      <p>The real cost is 3 hours a week for 52 weeks, on Monday evenings.</p>
+      <p class="card-note">Salary figures: Michael Page Malaysia Salary Guide 2026</p>
     </div>
   </div>
 </section>
@@ -604,8 +585,8 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     <p class="eyebrow">Your risk</p>
     <h2>The guarantee.</h2>
     <div class="card">
-      <p class="big">Come to the first <span class="ph">[N_FIRST_SESSIONS]</span> sessions. Do the homework. If you do not think it was worth the money, email me and I will refund you in full — no forms, no call, no argument.</p>
-      <p>I ask for the homework because I cannot help someone who does not turn up, and I would rather give you your money back than have you sit quietly at the back for <span class="ph">[WEEKS]</span> weeks.</p>
+      <p class="big">Come to the first 2 sessions. Do the homework. If you do not think it was worth the money, email me and I will refund you in full — no forms, no call, no argument.</p>
+      <p>I ask for the homework because I cannot help someone who does not turn up, and I would rather give you your money back than have you sit quietly at the back for 52 weeks.</p>
     </div>
   </div>
 </section>
@@ -620,9 +601,9 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
       <div class="split-col col-no">
         <h3>Do not apply if</h3>
         <ul>
-          <li>You have under <span class="ph">[MIN_YEARS]</span> years of experience. You need something to be visible <em>about</em> first.</li>
+          <li>You have under 3 years of experience. You need something to be visible <em>about</em> first.</li>
           <li>You want a certificate for your CV. This changes what you do on Monday, not what your CV looks like on Friday.</li>
-          <li>You cannot commit <span class="ph">[HOURS_WK]</span> hours a week. I will refund you, but we will both have wasted the place.</li>
+          <li>You cannot commit 3 hours a week. I will refund you, but we will both have wasted the place.</li>
           <li>You want to be told your company is fair. It is not, and we start from there.</li>
         </ul>
       </div>
@@ -648,7 +629,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
         <summary>I have started online courses before and never finished them.</summary>
         <div class="answer">
           <p>So has almost everyone who applies. That is a design problem, not a character problem.</p>
-          <p>This is <span class="ph">[N_PLACES]</span> people, not 4,000. The sessions are live, so your absence is visible. The homework is read by a human — me — and comes back with comments. You have <span class="ph">[N_ONE_TO_ONE]</span> one-to-one calls where I ask you directly what you did last week. Finishing is built into the structure, not left to your willpower on a Tuesday night.</p>
+          <p>This is 10 people, not 4,000. The sessions are live, so your absence is visible. The homework is read by a human — me — and comes back with comments. You have 4 one-to-one calls where I ask you directly what you did last week. Finishing is built into the structure, not left to your willpower on a Tuesday night.</p>
         </div>
       </details>
       <details>
@@ -657,15 +638,15 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
       </details>
       <details>
         <summary>Am I too senior — or too junior?</summary>
-        <div class="answer"><p>The sweet spot is <span class="ph">[MIN_YEARS]</span>+ years, sitting one or two grades below where you think you should be. Below that, you don't yet have enough substance to make visible. Well above that, you likely need coaching, not a cohort — <a href="#apply">apply anyway</a> and I'll tell you honestly.</p></div>
+        <div class="answer"><p>The sweet spot is 3+ years, sitting one or two grades below where you think you should be. Below that, you don't yet have enough substance to make visible. Well above that, you likely need coaching, not a cohort — <a href="#apply">apply anyway</a> and I'll tell you honestly.</p></div>
       </details>
       <details>
         <summary>What if I can't make a live session?</summary>
-        <div class="answer"><p>Everything is recorded and posted within <span class="ph">[HOURS]</span> hours. Miss one and you're fine. Miss most of them and the guarantee is the right outcome for both of us.</p></div>
+        <div class="answer"><p>Everything is recorded and posted within 24 hours. Miss one and you're fine. Miss most of them and the guarantee is the right outcome for both of us.</p></div>
       </details>
       <details>
         <summary>Can I pay in instalments?</summary>
-        <div class="answer"><p>Yes. <span class="ph">[PRICE_3X]</span> a month for three months, same total. Payment by <span class="ph">[PAYMENT_METHODS]</span>.</p></div>
+        <div class="answer"><p>Yes. USD 250 a month for three months, same total. Payment by card.</p></div>
       </details>
       <details>
         <summary>Is this in English? My English isn't perfect.</summary>
@@ -690,17 +671,17 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     <div class="split">
       <div class="split-col">
         <h3 style="color:var(--dark-ink)">One</h3>
-        <p class="sub" style="margin-top:1rem">You close this page. It was a good read. Next cycle comes. You are strong technically. They need more presence from you. Let's revisit next cycle. Your parents get another year older. The 27-year-old who is fluent in AI and comfortable on camera moves past you, and you tell yourself it's politics &mdash; which is true, and which changes nothing.</p>
+        <p class="sub" style="margin-top:1rem">You close this page. It was a good read. Next cycle comes. You are strong technically. They need more presence from you. Let's revisit next cycle. Your parents get another year older. Someone with half your substance and twice your visibility moves past you, and you tell yourself it's politics &mdash; which is true, and which changes nothing.</p>
       </div>
       <div class="split-col">
         <h3 style="color:var(--dark-ink)">Two</h3>
-        <p class="sub" style="margin-top:1rem">You spend <span class="ph">[HOURS_WK]</span> hours a week for <span class="ph">[WEEKS]</span> weeks. Your boss starts sending your slides up untouched. Someone you have never met mentions your name in a room. The next time the words &ldquo;we need someone senior for this&rdquo; are said, they are followed by yours.</p>
+        <p class="sub" style="margin-top:1rem">You spend 3 hours a week for 52 weeks. Your boss starts sending your slides up untouched. Someone you have never met mentions your name in a room. The next time the words &ldquo;we need someone senior for this&rdquo; are said, they are followed by yours.</p>
       </div>
     </div>
 
     <div class="cta-block">
-      <a class="btn btn-lg" href="#enrol">Take one of the <span class="ph">[N_PLACES]</span> places &rarr;</a>
-      <p class="cta-sub"><span class="ph">[N_TAKEN]</span> taken &middot; Applications close <span class="ph">[CLOSE_DATE]</span></p>
+      <a class="btn btn-lg" href="#enrol">Take one of the 10 places &rarr;</a>
+      <p class="cta-sub">8 taken &middot; Applications close 31 October</p>
     </div>
   </div>
 </section>
@@ -728,41 +709,41 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
   <div class="wrap">
     <div class="narrow flow">
       <p class="eyebrow">Take a place</p>
-      <h2>Two ways in.</h2>
-      <p>If you have read this far and you already know, take a place now. If you would rather talk to me first, apply below &mdash; it is the same cohort either way.</p>
+      <h2>Two ways to pay.</h2>
+      <p>Same programme, same cohort either way &mdash; choose whichever suits your cash flow. Apply below and I send the payment link once we have spoken.</p>
     </div>
 
     <div class="price-grid">
       <div class="price-card featured">
         <span class="price-badge">Best value</span>
         <h3>Pay in full</h3>
-        <p class="price-tag"><span class="ph">[PRICE]</span></p>
-        <p class="price-sub">One payment &middot; saves <span class="ph">[SAVING]</span></p>
+        <p class="price-tag">USD 600</p>
+        <p class="price-sub">One payment &middot; saves USD 150</p>
         <ul>
-          <li>The full <span class="ph">[WEEKS]</span>-week programme</li>
-          <li><span class="ph">[N_ONE_TO_ONE]</span> private sessions with me</li>
+          <li>The full 52-week programme</li>
+          <li>4 private sessions with me</li>
           <li>Lifetime access to everything</li>
-          <li>Founding-cohort extra: <span class="ph">[SPECIFIC_EXTRA]</span></li>
+          <li>Founding-cohort extra: an extra 1-to-1 goal setting and review session</li>
         </ul>
-        <a class="btn btn-lg" href="[CHECKOUT_URL_FULL]">Reserve my place &rarr;</a>
+        <a class="btn btn-lg" href="#apply">Apply &mdash; paying in full &rarr;</a>
       </div>
 
       <div class="price-card">
         <h3>Three monthly payments</h3>
-        <p class="price-tag"><span class="ph">[PRICE_3X]</span> <span style="font-size:0.5em;color:var(--ink-muted)">&times; 3</span></p>
-        <p class="price-sub">Total <span class="ph">[PRICE_PLAN_TOTAL]</span> &middot; first payment today</p>
+        <p class="price-tag">USD 250 <span style="font-size:0.5em;color:var(--ink-muted)">&times; 3</span></p>
+        <p class="price-sub">Total USD 750 &middot; first payment today</p>
         <ul>
           <li>Exactly the same programme</li>
           <li>Start now, pay over three months</li>
           <li>Same guarantee, same access</li>
           <li>No interest, no credit check</li>
         </ul>
-        <a class="btn btn-lg btn-ghost" href="[CHECKOUT_URL_PLAN]">Start the payment plan &rarr;</a>
+        <a class="btn btn-lg btn-ghost" href="#apply">Apply &mdash; payment plan &rarr;</a>
       </div>
     </div>
 
     <div class="narrow">
-      <p class="pay-note">Payment is handled by <span class="ph">[PAYMENT_PROVIDER]</span> &mdash; your card details never touch this page. Prices in <span class="ph">[CURRENCY]</span>. <a href="#guarantee">The guarantee</a> applies to both options: come to the first <span class="ph">[N_FIRST_SESSIONS]</span> sessions, do the homework, and if it was not worth it I refund you in full.</p>
+      <p class="pay-note">Payment is handled by ABA PayWay &mdash; your card details never touch this page. Prices in USD. You apply first; I send the payment link after we speak. <a href="#guarantee">The guarantee</a> applies to both options: come to the first 2 sessions, do the homework, and if it was not worth it I refund you in full.</p>
     </div>
   </div>
 </section>
@@ -782,12 +763,14 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     <div class="narrow flow">
       <p class="eyebrow">Or apply first</p>
       <h2>Tell me where you are stuck.</h2>
-      <p>Applying is not buying. It takes about <span class="ph">[FORM_MINUTES]</span> minutes, and I read every one myself. If I do not think this is right for you, I will tell you.</p>
+      <p>Applying is not buying. It takes about 5 minutes, and I read every one myself. If I do not think this is right for you, I will tell you.</p>
     </div>
 
     <div class="narrow">
-      <form class="form-card" id="apply-form" method="post" action="[FORM_ENDPOINT]" novalidate>
+      <form class="form-card" id="apply-form" method="post" action="https://formsubmit.co/el/colape" novalidate>
         <input type="hidden" name="_subject" value="Decision Room — new application">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="form_name" value="application">
         <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
 
@@ -842,7 +825,8 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
             <label for="ap-years">Years of experience <span class="req" aria-hidden="true">*</span></label>
             <select id="ap-years" name="years" required>
               <option value="">Choose one</option>
-              <option>Under 5 years</option>
+              <option>Under 3 years</option>
+              <option>3 to 4 years</option>
               <option>5 to 7 years</option>
               <option>8 to 11 years</option>
               <option>12 to 15 years</option>
@@ -880,7 +864,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
 
         <div class="form-actions">
           <button class="btn btn-lg" type="submit">Send my application &rarr;</button>
-          <p class="form-foot">I reply personally, usually within <span class="ph">[REPLY_TIME]</span>. Your details are used only to contact you about this programme and are never sold or passed on. <a href="[PRIVACY_URL]">Privacy</a>.</p>
+          <p class="form-foot">I reply personally, usually within 3 working days. Your details are used only to contact you about this programme and are never sold or passed on. <a href="privacy.html">Privacy</a>.</p>
         </div>
 
         <div class="form-status" id="apply-status" role="status" aria-live="polite"></div>
@@ -888,9 +872,9 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     </div>
 
     <div class="narrow ps" style="border-top-color:var(--rule)">
-      <p><strong>P.S.</strong> If you are still reading, it is because a specific person came to mind while you read this &mdash; the one who talks more than they work, and is one grade above you. They are not smarter than you. They simply understood something about the Decision Room that nobody ever told you. It took me six years to see it. It takes <span class="ph">[WEEKS]</span> weeks to learn it. <strong>Applications close <span class="ph">[CLOSE_DATE]</span>.</strong></p>
+      <p><strong>P.S.</strong> If you are still reading, it is because a specific person came to mind while you read this &mdash; the one who talks more than they work, and is one grade above you. They are not smarter than you. They simply understood something about the Decision Room that nobody ever told you. It took me six years to see it. It takes 52 weeks to learn it. <strong>Applications close 31 October.</strong></p>
       <p><strong>P.P.S.</strong> Not ready for either? Take the letter below instead. No pitch, and you can leave whenever you like.</p>
-      <p class="form-foot">Questions first? <a href="mailto:alextee2005@gmail.com">alextee2005@gmail.com</a> &middot; <a href="[WHATSAPP_URL]">WhatsApp</a></p>
+      <p class="form-foot">Questions first? <a href="mailto:alextee2005@gmail.com">alextee2005@gmail.com</a> &middot; <a href="https://wa.me/qr/WU6SNWIAQRMYL1">WhatsApp</a></p>
     </div>
   </div>
 </section>
@@ -912,7 +896,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
       <p class="sub">One email most weeks. One specific thing that changes what gets said about you when you are not in the room &mdash; written for people working inside Asian companies, not American ones.</p>
       <p class="sub">No pitch, no motivational filler. Leave in one click whenever you want.</p>
 
-      <form class="nl-form" id="nl-form" method="post" action="[NEWSLETTER_ENDPOINT]" novalidate>
+      <form class="nl-form" id="nl-form" method="post" action="https://alex-tee-cfa.kit.com/dbc9d4be2f" novalidate>
         <input type="hidden" name="form_name" value="newsletter">
         <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
         <div class="field nl-email" style="margin-top:0">
@@ -923,7 +907,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
         <button class="btn" type="submit">Send it to me &rarr;</button>
         <div class="form-status" id="nl-status" role="status" aria-live="polite" style="flex:1 1 100%"></div>
       </form>
-      <p class="form-foot" style="max-width:34rem">By subscribing you agree to receive the letter by email. Your address is never sold or passed on. <a href="[PRIVACY_URL]" style="color:var(--dark-accent)">Privacy</a>.</p>
+      <p class="form-foot" style="max-width:34rem">By subscribing you agree to receive the letter by email. Your address is never sold or passed on. <a href="privacy.html" style="color:var(--dark-accent)">Privacy</a>.</p>
     </div>
   </div>
 </section>
@@ -940,7 +924,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
 </footer>
 
 <div class="stickybar">
-  <span class="note">Closes <span class="ph">[CLOSE_DATE]</span></span>
+  <span class="note">Closes 31 October</span>
   <a class="btn" href="#enrol">Take a place &rarr;</a>
 </div>
 
