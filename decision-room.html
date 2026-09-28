@@ -29,6 +29,9 @@
 
   STATUS as of this commit: all supplied values are filled in.
 
+  Both form endpoints are wired (FormSubmit + Kit). Append ?debug=1 to the
+  URL for a live diagnostic panel; decisionRoomDiagnostics() dumps the trace.
+
   STILL OUTSTANDING
   1.  CHECKOUT LINKS — both pricing buttons currently route to the application
       form, because no payment link exists yet. Once you create the ABA PayWay
@@ -767,10 +770,11 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     </div>
 
     <div class="narrow">
-      <form class="form-card" id="apply-form" method="post" action="https://formsubmit.co/el/colape" novalidate>
+      <form class="form-card" id="apply-form" method="post" action="https://formsubmit.co/alextee2005@gmail.com" novalidate>
         <input type="hidden" name="_subject" value="Decision Room — new application">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="">
         <input type="hidden" name="form_name" value="application">
         <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
 
@@ -896,8 +900,9 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
       <p class="sub">One email most weeks. One specific thing that changes what gets said about you when you are not in the room &mdash; written for people working inside Asian companies, not American ones.</p>
       <p class="sub">No pitch, no motivational filler. Leave in one click whenever you want.</p>
 
-      <form class="nl-form" id="nl-form" method="post" action="https://alex-tee-cfa.kit.com/dbc9d4be2f" novalidate>
+      <form class="nl-form" id="nl-form" method="post" action="https://app.kit.com/forms/9971330/subscriptions" novalidate>
         <input type="hidden" name="form_name" value="newsletter">
+        <input type="hidden" name="email_address" value="">
         <div class="hp" aria-hidden="true"><label>Leave this empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
         <div class="field nl-email" style="margin-top:0">
           <label for="nl-email" class="hp">Your email</label>
@@ -1094,6 +1099,38 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
     }
   }
 
+  /* ---------- pre-submit field sync ----------
+     Runs for both the fetch and the native path, so a fallback POST carries
+     exactly the same payload the fetch would have.                        */
+  function syncFields(form, tag) {
+    if (tag === "NL") {
+      var em = form.querySelector('input[name="email"]');
+      var alt = form.querySelector('input[name="email_address"]');
+      if (em && alt) { alt.value = em.value; diag("info", "DR-NL-102", "Mirrored email into email_address for Kit."); }
+    }
+    var next = form.querySelector('input[name="_next"]');
+    if (next && location.protocol !== "file:") {
+      next.value = location.origin + location.pathname + "?sent=application";
+      diag("info", "DR-" + tag + "-103", "Return URL set for the native fallback.", next.value);
+    }
+  }
+
+  /* A native fallback POST leaves the page; FormSubmit sends the visitor back
+     with ?sent=application. Show the thank-you so the round trip is seamless. */
+  (function returning() {
+    if (!/[?&]sent=application\b/.test(location.search)) return;
+    var box = document.getElementById("apply-status");
+    var form = document.getElementById("apply-form");
+    diag("ok", "DR-APP-901", "Returned from a native POST; showing confirmation.");
+    if (form) {
+      Array.prototype.forEach.call(form.querySelectorAll(".form-row, .field, .check, .form-actions"),
+        function (el) { el.hidden = true; });
+    }
+    show(box, "ok", "Got it \u2014 thank you.",
+      "I read every application myself and will come back to you personally. Check your email, and your spam folder just in case.");
+    if (box) box.scrollIntoView({ block: "center" });
+  })();
+
   /* ---------- wiring ---------- */
   function wire(formId, statusId, tag, copy) {
     var form = document.getElementById(formId);
@@ -1115,6 +1152,7 @@ button.btn[disabled] { opacity: 0.6; cursor: progress; }
         return;
       }
       if (!validate(form, tag)) { e.preventDefault(); return; }
+      syncFields(form, tag);
       if (typeof window.fetch !== "function") {
         diag("warn", "DR-" + tag + "-300", "No fetch; submitting natively.");
         return;                                  // browser performs the POST
